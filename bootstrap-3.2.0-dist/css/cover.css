@@ -7,6 +7,8 @@ a,
 a:focus,
 a:hover {
   color: white;
+  text-decoration: none; 
+  border-bottom:1px dashed;
 }
 
 
@@ -18,30 +20,34 @@ html,
 body {
   height: 100%;
   background-color: white;
+  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
 }
 body {
   color: white;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
   display: table;
   width: 100%;
-  height: 100%; /* For at least Firefox */
+  height: 200%; /* For at least Firefox */
   min-height: 100%;
-  background-image:url(../../cover-itAlps.jpg);
-  background-size:cover;
-  background-repeat:no-repeat;
 }
 .site-wrapper-inner {
   display: table-cell;
   vertical-align: top;
+  height: 50%;
+  background-image:url(../../cover-itAlps.jpg);
+  background-size:cover;
+  background-attachment: fixed;
+  background-repeat:no-repeat;
 }
+
 .cover-container {
   margin-right: auto;
   margin-left: auto;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
 /* Padding for spacing */
@@ -53,6 +59,12 @@ body {
 /*
  * Header
  */
+ .masthead{
+	letter-spacing: 1px;
+	font-size: 12px; 
+	text-shadow: none;
+ }
+ 
 .masthead-brand {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -67,11 +79,7 @@ body {
 .masthead-nav > li > a {
   padding-right: 0;
   padding-left: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000; /* IE8 proofing */
-  color: rgba(0,0,0,.75);
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px dashed transparent;
 }
 .masthead-nav > li > a:hover,
 .masthead-nav > li > a:focus {
@@ -82,7 +90,6 @@ body {
 .masthead-nav > .active > a,
 .masthead-nav > .active > a:hover,
 .masthead-nav > .active > a:focus {
-  color: #000;
   border-bottom-color: #fff;
 }
 
@@ -108,6 +115,36 @@ body {
   font-weight: bold;
 }
 
+/*
+ * Btn
+ */
+ 
+.empty-btn{
+	background-color: transparent;
+	border: 1px solid white;
+	font-size:20px;
+	padding:15px;
+	color:white;
+}
+
+.empty-btn:hover{
+	border: 1px solid #428bca;
+	color:#428bca;
+}
+
+/*
+ * Main Page
+ */
+ 
+ .main-page{
+	width:100%;
+	height:40%;
+	background-color:white; 
+	display: table-row;
+  	vertical-align: bottom;
+	color:black;
+	overflow:auto;
+ }
 /*
  * Affix and center
  */
@@ -138,9 +175,8 @@ body {
   .masthead,
   .mastfoot,
   .cover-container {
-    width: 800px;
+    width: 900px;
   }
 }
-
 
 
