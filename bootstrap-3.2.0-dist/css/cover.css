@@ -25,6 +25,8 @@ body {
 body {
   color: white;
   text-align: center;
+  background: url(../../cover-itAlps.jpg) no-repeat fixed center 0;
+  background-size:cover;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -38,10 +40,6 @@ body {
   display: table-cell;
   vertical-align: top;
   height: 50%;
-  background-image:url(../../cover-itAlps.jpg);
-  background-size:cover;
-  background-attachment: fixed;
-  background-repeat:no-repeat;
 }
 
 .cover-container {
