@@ -1,0 +1,12 @@
+# Site settings
+title: ABeltra.me
+email: beltramo.ale@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  IT Student, iOS & Web Developer who loves to build mobile and web applications. 
+  Co-Founder of Sitecity
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://abeltra.me" # the base hostname & protocol for your site
+twitter_username: BeltramoAle
+github_username:  ABeltramo
+# Build settings
+markdown: kramdown
