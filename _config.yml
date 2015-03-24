@@ -1,12 +1,60 @@
-# Site settings
-title: ABeltra.me
-email: beltramo.ale@gmail.com
-description: > # this means to ignore newlines until "baseurl:"
-  IT Student, iOS & Web Developer who loves to build mobile and web applications. 
-  Co-Founder of Sitecity
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://abeltra.me" # the base hostname & protocol for your site
-twitter_username: BeltramoAle
-github_username:  ABeltramo
-# Build settings
-markdown: kramdown
+title:            ABeltramo
+description:      IT Student, iOS & Web Developer who loves to build mobile and web applications. <br>Co-Founder of <a href='http://sitecityapp.com'>Sitecity</a>
+logo:             logo.jpeg
+share:            false
+dropcap:		  true
+# Change url to your domain. Leave localhost server or blank when working locally.
+# or use the hint from http://jekyllrb.com/docs/github-pages/ to keep this the same 
+# whether working locally or remotely. Start Jekyll with: jekyll serve --baseurl ''
+url:			 "" 
+
+# Owner/author information
+owner:
+  name:           Beltramo Alessandro
+  avatar:         logo.jpeg
+  email:          beltramo.ale@gmail.com
+  # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
+  description:    IT Student, iOS & Web Developer who loves to build mobile and web applications. <br>Co-Founder of <a href='http://sitecityapp.com'>Sitecity</a>
+  # Social networking links used in footer. Update and remove as you like.
+  twitter:        BeltramoAle
+  github:         ABeltramo
+
+# Links to include in footer navigation
+# For external links add external: true
+links:
+  - title: WORKS
+    url: /
+    external: false
+    icon: home
+  - title: LANGUAGES
+    url: /languages
+  - title: ABOUT
+    url: /about
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    Europe/Rome
+future:      true
+highlighter: pygments
+markdown:    kramdown
+paginate:    5
+paginate_path: "page:num"
+
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:categories/:title
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: false
+
+  coderay:
+    coderay_line_numbers: 
+    coderay_line_numbers_start: 1
+    coderay_tab_width: 4
+    coderay_bold_every: 10
+    coderay_css: class
+
+include: [".htaccess"]
+exclude: ["lib", "config.rb", "Gemfile", "Capfile", "Gemfile.lock", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
