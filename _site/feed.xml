@@ -3,13 +3,11 @@
 
 
 
-  
-
 <title type="text">ABeltramo</title>
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="/" />
-<updated>2015-03-24T18:31:41+01:00</updated>
+<updated>2015-12-17T13:50:43+01:00</updated>
 <id>/</id>
 <author>
   <name>Beltramo Alessandro</name>
@@ -30,14 +28,44 @@
     <uri></uri>
     <email>beltramo.ale@gmail.com</email>
   </author>
-  <category scheme="/tags/#sample%20post" term="sample post" />
+  <category scheme="/tags/#Web%20app" term="Web app" />
   <content type="html">
   
     &lt;h2 id=&quot;sitecity&quot;&gt;Sitecity&lt;/h2&gt;
 
-&lt;p&gt;Sitecity it’s the very first web site that I have created.
-Back in 2007 I was a little kid exploring the Internet in search of somenthing interesting (between an MSN chat and the first Photos on Facebook). The problem that I had every time I surf the web it’s that &lt;/p&gt;
+&lt;p&gt;Sitecity is the very first web site that I have created.&lt;br /&gt;
+Back in 2007 I was a little kid exploring the Internet in search of somenthing interesting (between an MSN chat and the first Photos on Facebook) the problem that I had every time I surf the web it’s that when I find an usefull page I don’t know where to save it!&lt;br /&gt;
+Back in the days there &lt;strong&gt;isn’t any way to synch your Bookmarks&lt;/strong&gt; over the &lt;em&gt;cloud&lt;/em&gt; and use it on another computer.&lt;br /&gt;
+A couple of month later Sitecity was born!&lt;/p&gt;
 
+&lt;h3 id=&quot;allegare-screenshot&quot;&gt;&lt;strong&gt;ALLEGARE SCREENSHOT&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;After the creation the site goes in the black hole of the Internet, the spiders forgot where my domain were (the old sitecity.altervista.org) and I were the only user of the service I had created.
+###&lt;em&gt;5 October 2012&lt;/em&gt;
+It’s the beginning of my College career I was in Milan in a new home shared with 3 roommates, I nearly forgot Sitecity in favour of the new and shining &lt;em&gt;cloud&lt;/em&gt; services when I receive the following email:&lt;/p&gt;
+
+&lt;h3 id=&quot;tradurre&quot;&gt;&lt;strong&gt;TRADURRE&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ciao Alessandro,
+&lt;br /&gt;mentre effettuavo delle ricerche su internet sono capitato sul tuo “Sitecity”.
+&lt;br /&gt;Trovo che sia un’idea molto interessante e che sarebbe ancora più utile se fosse implementata direttamente ad un browser(come chrome),per salvare preferiti e caricarli su qualsiasi computer ci si trovi,come fosse quello di casa.
+Insomma una sorta di dropbox dei preferiti che funziona accedendo al proprio account.
+&lt;br /&gt;Pensi che sia possibile creare un’estensione per Chrome in grado di fare ciò?
+Buona giornata&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Monzani Fabio&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;I was surprised that someone discover my website and I liked the idea! Back then I was full of free time so I accept the challenge and try to see how Chrome Extension works.
+This is the beginning of a friendship that still goes on with my &lt;strong&gt;Designer&lt;/strong&gt;.
+###Chrome extension
+The main problem here it’s how to communicate from client to my sitecity server. Another problem it’s that the client had only javascript and html capabilities. 
+&lt;br /&gt;I didn’t know how to create a proper API so I created my own version:
+a super simple php page that receive get parameters (like the &lt;strong&gt;supersecure plain HTTP username and password&lt;/strong&gt; of the user) and respond with JSON result of the corresponding MYSQL query. 
+&lt;br /&gt;Once the server API where complete the Chrome extension isn’t so difficult to implement. The first version where graphically poor and here Fabio came in help&lt;/p&gt;
+
+&lt;h3 id=&quot;screenshot-della-prima-versione&quot;&gt;&lt;strong&gt;Screenshot della prima versione&lt;/strong&gt;&lt;/h3&gt;
 
   
   &lt;p&gt;&lt;a href=&quot;/articles/Sitecity&quot;&gt;Sitecity&lt;/a&gt; was originally published by Beltramo Alessandro at &lt;a href=&quot;&quot;&gt;ABeltramo&lt;/a&gt; on March 24, 2015.&lt;/p&gt;</content>
