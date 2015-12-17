@@ -41,34 +41,10 @@
         <loc>/sitemap.xml</loc>
     </url>
     
-    <url>
-        <loc>/page2/index.html</loc>
-    </url>
-    
 
     
     <url>
-        <loc>/webdevelopment/why-jekyll</loc>
-    </url>
-    
-    <url>
-        <loc>/personal/introducing-notepad</loc>
-    </url>
-    
-    <url>
-        <loc>/theme/documentation</loc>
-    </url>
-    
-    <url>
-        <loc>/theme/readability-feature-post</loc>
-    </url>
-    
-    <url>
-        <loc>/articles/readability-post</loc>
-    </url>
-    
-    <url>
-        <loc>/articles/theme-elements</loc>
+        <loc>/articles/Sitecity</loc>
     </url>
     
 </urlset>
