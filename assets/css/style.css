@@ -372,21 +372,16 @@ nav.pagination {
       color: white; }
   .notepad-site-footer .social-icons {
     text-align: center;
-    float: none;
-    padding-bottom: 3.75rem; }
+    float: none; }
     .notepad-site-footer .social-icons a {
       color: black; }
   @media only screen and (min-width: 70em) {
     .notepad-site-footer .social-icons,
     .notepad-site-footer .copyright {
-      width: 49%;
-      padding: 5rem; }
+      width: 100%; }
     .notepad-site-footer .copyright {
       text-align: left;
       float: left; }
-    .notepad-site-footer .social-icons {
-      text-align: right;
-      float: right; } }
 
 .fadeInDown {
   -webkit-animation-duration: 1s;
