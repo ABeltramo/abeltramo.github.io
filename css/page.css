@@ -5,3 +5,11 @@
 .section {
     margin-bottom: 100px;
 }
+
+.clojure {
+    background-color: #90b4fe;
+}
+
+.clojure .title {
+    color: #91dc47 !important;
+}
