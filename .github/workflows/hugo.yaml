@@ -55,6 +55,10 @@ jobs:
       - name: Install Node.js dependencies
         run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
 
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
       - uses: reitzig/actions-asciidoctor@v2.0.2
 
       - name: Build with Hugo
