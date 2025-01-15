@@ -1,8 +1,7 @@
 +++
+title = "Inference with llama-cpp and Docker"
 date = 2025-01-13
 +++
-
-# Inference with llama-cpp and Docker
 
 See the official [Docker docs](https://github.com/ggerganov/llama.cpp/blob/master/docs/docker.md).  
 In theory, you could download any model and use the `:full` image to convert it too, but I took the lazy road and downloaded an already converted `GGUF` model.
