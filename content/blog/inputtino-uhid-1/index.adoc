@@ -1,0 +1,126 @@
+---
+date: 2024-03-14
+title: "Creating a virtual DualSense joypad (1)"
+description: "How I've implemented a virtual PS5 joypad in inputtino"
+---
+
+I've been working on a project called https://github.com/games-on-whales/inputtino[inputtino]: a library that allows you to create and use virtual input devices (ex: mouse, keyboard, joypads) on Linux.
+
+Most of the devices are built using the https://kernel.org/doc/html/latest/input/uinput.html[uinput kernel module]
+and controlled via https://www.freedesktop.org/wiki/Software/libevdev/[libevdev].
+With that, it was fairly easy to create virtual joypads that would be correctly recognised like an Xbox or Nintendo controller.
+Given those two were working fine, I've decided to try and replicate a PS controller too.
+
+== Just use uinput, right?
+
+The PS4 and PS5 controllers also include a Gyroscope, Accelerometer and a Touchpad.
+The open source driver https://github.com/torvalds/linux/blob/305230142ae0637213bf6e04f6d9f10bbcb74af8/drivers/hid/hid-playstation.c[hid-playstation] exposes all these features as 3 separate input devices:
+
+----
+/dev/input/event20:	Sony Interactive Entertainment Wireless Controller
+/dev/input/event21:	Sony Interactive Entertainment Wireless Controller Motion Sensors
+/dev/input/event22:	Sony Interactive Entertainment Wireless Controller Touchpad
+----
+
+Ideally, we should be able to use `uinput` to create these devices independently; and that's exactly the path that I've followed at the start of this journey. +
+
+I've managed to replicate the DualSense controller with 3 separate devices, I could see them in `evtest`
+and `evemu-record` and they were reporting the right values when trying to emulate gyro and acceleration. +
+So why would no game pick up the motion sensor data?
+
+On top of that, The DualSense controller also includes: LED, microphone, speaker, haptic feedback and adaptive triggers.
+All stuff that *isn't exposed as input devices*, so where would that extra stuff be coming from?
+And how can I replicate it?
+
+We have to dive deeper..
+
+image::deep-dive.png[A meme image: we have to dive deeper]
+
+== How SDL2 links these 3 devices into a single joypad?
+
+The best way to understand how things might work inside a game is to look at how SDL2 handles this.
+Even if a game might not use SDL as a library, it's very likely that the logic would be similar.
+
+The rabbit hole starts in https://github.com/libsdl-org/SDL/blob/9225a421b790cf24aaef307e088c3d260a81e5a1/src/joystick/SDL_joystick.c#L722-L723[SDL_GetJoysticks()]
+where SDL starts to look for joysticks in your system (newer https://github.com/libsdl-org/SDL/blob/9225a421b790cf24aaef307e088c3d260a81e5a1/src/joystick/SDL_gamepad.c#L2408-L2409[SDL_GetGamepads()] is just a wrapper around this method).
+
+[source,c]
+....
+SDL_JoystickID *SDL_GetJoysticks(int *count)
+{
+    // ...
+
+        for (i = 0; i < SDL_arraysize(SDL_joystick_drivers); ++i) {
+            total_joysticks += SDL_joystick_drivers[i]->GetCount();
+        }
+
+    // ...
+
+        for (device_index = 0; device_index < num_joysticks; ++device_index) {
+            SDL_assert(joystick_index < total_joysticks);
+            joysticks[joystick_index] = SDL_joystick_drivers[i]->GetDeviceInstanceID(device_index);
+        }
+}
+....
+
+Looks like SDL2 is iterating over a list of drivers and then calling `GetCount()` to see how many joysticks are available and finally accessing them via `GetDeviceInstanceID()`.
+
+For brevity, I'll skip the details over the SDL drivers, but the main point is that the https://github.dev/libsdl-org/SDL/blob/main/src/joystick/SDL_joystick.c[sysjoystick] driver is the one that will be picking up our virtual `/dev/input/event*` devices.
+This will internally use `udev`, `inotify`
+and ultimately just a raw scan of `/dev/input` to find the joysticks and to listen for hotplug events.
+
+So, the implementation of `GetCount()` is https://github.com/libsdl-org/SDL/blob/9225a421b790cf24aaef307e088c3d260a81e5a1/src/joystick/linux/SDL_sysjoystick.c#L1075-L1080[just returning a variable], bummer.
+Turns out the variable is set in `LINUX_JoystickInit()`, that's where the detection happens.
+
+First off, SDL2 assumes that every `/dev/input/event*` device might be a joypad, so it opens them all to check if they are based on some heuristics.
+The main meat for us is in https://github.com/libsdl-org/SDL/blob/9225a421b790cf24aaef307e088c3d260a81e5a1/src/joystick/linux/SDL_sysjoystick.c#L434-L435[MaybeAddDevice()], which calls `bool IsJoystick()` and `bool IsSensor()`, bingo!
+
+After debugging the code, I've found that our two virtual devices (joypad and motion sensor) are both being recognised as joypads, passing the `IsJoystick()` check! +
+Turns out that the problem was in a completely different place:
+
+[source,c]
+....
+/*
+ * Return 1 if the gamepad should be ignored by SDL
+ */
+bool SDL_ShouldIgnoreGamepad(Uint16 vendor_id, Uint16 product_id, Uint16 version, const char *name)
+{
+#ifdef SDL_PLATFORM_LINUX
+    if (SDL_endswith(name, " Motion Sensors")) {
+        // Don't treat the PS3 and PS4 motion controls as a separate gamepad
+        return true;
+    }
+    if (SDL_strncmp(name, "Nintendo ", 9) == 0 && SDL_strstr(name, " IMU") != NULL) {
+        // Don't treat the Nintendo IMU as a separate gamepad
+        return true;
+    }
+    if (SDL_endswith(name, " Accelerometer") ||
+        SDL_endswith(name, " IR") ||
+        SDL_endswith(name, " Motion Plus") ||
+        SDL_endswith(name, " Nunchuk")) {
+        // Don't treat the Wii extension controls as a separate gamepad
+        return true;
+    }
+#endif
+....
+
+Right, so everything is a gamepad unless it's ignored.. +
+Changing the name to end with `" Motion Sensors"` got us around the first hurdle, SDL will now correctly pick up the virtual joypad as a controller and the virtual motion sensor as a sensor.
+
+The main issue now seems to be in linking these 2 devices together as a single joypad.
+The way SDL2 does this is to match the `uniq` identifier (using the ioctl `EVIOCGUNIQ` https://github.com/libsdl-org/SDL/blob/4189edaeb7ce4da9ab420b98904fa22196fb3dca/src/joystick/linux/SDL_sysjoystick.c#L1508[in this method]) between what is recognised as sensor and what is recognised as joypad. +
+Unfortunately, there's no way to set the `uniq` for an uinput device; there's https://lore.kernel.org/linux-bluetooth/20191201145357.ybq5gfty4ulnfasq@pali/t/#u[a proposal] to add this to the Linux kernel but as of March 2024 this has still not been merged.
+
+So what happens in practice is that SDL ends up discarding that sensor and just using the joypad instead.
+
+== So what now?
+
+Having all the debugging setup in place turned out to be invaluable, what would SDL2 do when I plug a real DualSense controller?
+Turns out that it wouldn't follow the same code path, instead, the `hidapi` driver would be used to access the controller directly via USB.
+
+After some more digging, I found out about https://kernel.org/doc/html/latest/hid/uhid.html[UHID]:
+
+`UHID` allows us to completely replicate the DualSense controller at a lower level.
+The device that we'll create via UHID will be picked up by the kernel https://github.com/torvalds/linux/blob/master/drivers/hid/hid-playstation.c[hid-playstation] just like a USB connected DualSense controller would be, which in turn will create the `/dev/input/event` devices and downstream applications will see the 3 devices as they should be.
+
+In the next post I'll go over the details of how I've implemented the UHID device and how it's working out in *inputtino*.
