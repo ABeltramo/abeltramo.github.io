@@ -123,4 +123,4 @@ After some more digging, I found out about https://kernel.org/doc/html/latest/hi
 `UHID` allows us to completely replicate the DualSense controller at a lower level.
 The device that we'll create via UHID will be picked up by the kernel https://github.com/torvalds/linux/blob/master/drivers/hid/hid-playstation.c[hid-playstation] just like a USB connected DualSense controller would be, which in turn will create the `/dev/input/event` devices and downstream applications will see the 3 devices as they should be.
 
-In the next post I'll go over the details of how I've implemented the UHID device and how it's working out in *inputtino*.
+In the link:{{< ref "inputtino-uhid-2" >}}[next post] I'll go over the details of how I've implemented the UHID device and how it's working out in *inputtino*.

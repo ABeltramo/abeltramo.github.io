@@ -8,7 +8,7 @@ theme = "terminal"
 contentTypeName = "blog"
 
 # if you set this to 0, only submenu trigger will be visible
-showMenuItems = 3
+showMenuItems = 4
 
 # show selector to switch language
 showLanguageSelector = false
@@ -28,6 +28,10 @@ autoCover = false
 # If you use git, you can set `enableGitInfo` to `true` and then post will automatically get the last updated
 showLastUpdated = false
 
+[params.author]
+email = 'beltramo.ale@gmail.com'
+name = 'ABeltramo'
+
 [languages]
 [languages.en]
 languageName = "English"
@@ -37,7 +41,7 @@ title = "ABeltramo"
 subtitle = "Personal blog and notes from ABeltramo"
 owner = ""
 keywords = ""
-copyright = ""
+copyright = "© ABeltramo"
 menuMore = "Show more"
 readMore = "Read more"
 readOtherPosts = "Read other posts"
@@ -52,22 +56,34 @@ words = "words"
 logoText = "ABeltramo"
 logoHomeLink = "/"
 
-[[languages.en.menu.main]]
-identifier = "blog"
+[menus]
+[[menus.main]]
 name = "Blog"
 url = "/blog"
+weight = 10
 
-[[languages.en.menu.main]]
-identifier = "notes"
+[[menus.main]]
 name = "Notes"
 url = "/notes"
+weight = 20
 
-[[languages.en.menu.main]]
-identifier = "github"
+[[menus.main]]
 name = "Github"
 url = "https://github.com/ABeltramo"
+weight = 30
+
+[[menus.main]]
+name = "RSS"
+url = "/index.xml"
+weight = 40
 
 # Allow asciidoctor
 [security]
 [security.exec]
 allow = ['^(dart-)?sass(-embedded)?$', '^go$', '^git$', '^npx$', '^postcss$', '^tailwindcss$', "^asciidoctor$"]
+
+[outputs]
+home = ['html', 'rss']
+section = ['html', 'rss']
+taxonomy = ['html']
+term = ['html']
