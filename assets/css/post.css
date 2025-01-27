@@ -139,3 +139,7 @@ blockquote {
     background: color-mix(in srgb, var(--accent) 5%, transparent);
     padding: 15px !important;
 }
+
+.code-toolbar {
+    border: 0 !important;
+}
