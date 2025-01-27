@@ -153,7 +153,7 @@ Why is it working on some games and not on others? Why is Steam correctly recogn
 
 ![a meme: Di Caprio in Inception saying "We need to go deeper"](/deeper.png)
 
-Buckle up! In the [next post]({{< ref "inputtino-uhid-3" >}}) we'll go back to dive into the depths of SDL to understand what's going on!
+Buckle up! In the next post we'll go back to dive into the depths of SDL to understand what's going on!
 
 [^4]: https://github.com/LizardByte/Sunshine/issues/3468
 [^5]: https://github.com/games-on-whales/inputtino/issues/16
