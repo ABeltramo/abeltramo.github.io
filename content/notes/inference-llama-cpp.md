@@ -25,6 +25,14 @@ git lfs install
 git lfs pull --include "mistral-7b-instruct-v0.2.Q8_0.gguf"
 ```
 
+## Optional: convert model if not in GGUF format
+
+```
+docker run -v ${PWD}:/models ghcr.io/ggerganov/llama.cpp:full --convert /models/
+```
+
+You can also select the output format between: `["f32", "f16", "bf16", "q8_0", "tq1_0", "tq2_0", "auto"]` ex: `--outtype q8_0`
+
 ## Run llama.cpp server
 
 ```bash
@@ -36,3 +44,14 @@ See all the possible CLI params here: https://github.com/ggerganov/llama.cpp/tre
 Tweak `--n-gpu-layers` based on your available GPU VRAM.
 
 That will expose a web UI at `/` to manually chat with the model and OpenAI compatible APIs at `/v1/chat/completions`
+
+## Avoid downloading, you can directly link to Hugging Face!
+
+```
+--hf-repo <user>/<model>[:quant] (quant defaults to Q4_K_M) or use --hf-file
+--hf-token <token>
+```
+
+(it'll store the model in `/root/.cache/llama.cpp/` so probably you want to mount that too)
+
+
