@@ -1,10 +1,10 @@
 ---
 date: 2024-03-14
-title: "Creating a virtual DualSense joypad (1)"
-description: "How I've implemented a virtual PS5 joypad in inputtino"
+title: "When uinput Isn't Enough: Virtualizing a DualSense controller"
+description: "Why `uinput` doesn't work for motion sensors support on a virtual joypad"
 ---
 
-I've been working on a project called https://github.com/games-on-whales/inputtino[inputtino]: a library that allows you to create and use virtual input devices (ex: mouse, keyboard, joypads) on Linux.
+I've been working on an open source project called https://github.com/games-on-whales/inputtino[inputtino]: a library that allows you to create and use virtual input devices (ex: mouse, keyboard, joypads) on Linux.
 
 Most of the devices are built using the https://kernel.org/doc/html/latest/input/uinput.html[uinput kernel module]
 and controlled via https://www.freedesktop.org/wiki/Software/libevdev/[libevdev].

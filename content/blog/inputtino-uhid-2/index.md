@@ -1,15 +1,21 @@
 ---
 date: 2024-03-24
-title: "Creating a virtual DualSense joypad (2)"
-description: "How we've used uhid to create a virtual DualSense joypad"
+title: "Creating a Virtual DualSense Controller via UHID"
+description: "How we've moved from `uinput` to `uhid` to create a virtual DualSense controller"
 ---
 
-In my [previous post]({{< ref "inputtino-uhid-1" >}}), we've seen the challenges of creating a virtual PlayStation
-controller using uinput.  
-While uinput worked well for basic gamepad features, it fell short when trying to replicate the DualSense's more
+## Recap
+
+I've been working on an open source project called [inputtino](https://github.com/games-on-whales/inputtino):
+a library that allows you to create and use virtual input devices (ex: mouse, keyboard, joypads) on Linux.
+
+In the [previous post]({{< ref "inputtino-uhid-1" >}}), we've seen the challenges of creating a virtual PlayStation
+controller using `uinput`.  
+Whilst `uinput` worked well for basic gamepad features, it fell short when trying to replicate the DualSense's more
 advanced capabilities like motion sensors and touchpad.  
 The solution? Moving down the stack
-to [UHID](https://kernel.org/doc/html/latest/hid/uhid.html) (User-space HID): a kernel module that allows us to create virtual USB HID devices.
+to [UHID](https://kernel.org/doc/html/latest/hid/uhid.html) (User-space HID): a kernel module that allows us to create
+virtual USB HID devices.
 
 ## UHID
 
@@ -36,7 +42,9 @@ sequenceDiagram
 ```
 
 There are two ways to connect a DualSense to a computer: via USB or Bluetooth. I've started with emulating a USB device
-because it's easier to implement, we'll see the Bluetooth part later.
+because it's easier to implement and debug. Bluetooth seems to require a bit more work since all communications also
+include a CRC32 checksum, we'll leave that for another time (spoiler: it's going to be in
+[the next post]({{<ref "inputtino-uhid-3">}})).
 
 ## Virtual USB DualSense joypad
 
@@ -81,7 +89,7 @@ struct dualsense_input_report_usb {
 };
 ```
 
-Wait, where does that comes from?  
+Wait, where does that come from?
 
 Well luckily someone else reverse engineered the DualSense and shared
 the [report structure](https://github.com/nondebug/dualsense). On top of that they've also made
@@ -144,16 +152,24 @@ It does! 🎉
 Steam properly recognises it as a DualSense joypad, you can see the right glyphs and even Gyro, Acceleration and
 touchpad are all working.
 
-After merging and releasing this to [Wolf](https://github.com/games-on-whales/wolf) and [Sunshine](https://github.com/LizardByte/Sunshine), we've got some weird issues [^4] [^5] reported by users: it seems that our virtual DualSense is not being recognised by some games. Ultimately, it seems that only when Steam Input is enabled the controller is properly recognised.  
+After merging and releasing this to [Wolf](https://github.com/games-on-whales/wolf)
+and [Sunshine](https://github.com/LizardByte/Sunshine), we've got some weird issues [^4] [^5] reported by users: it
+seems that our virtual DualSense is not being recognised by some games. Ultimately, it seems that only when Steam Input
+is enabled the controller is properly recognised.
 
-When I first tested my implementation using SDL2, I've noticed that some of the more advanced features like touchpad and LED were not recognised..  
-If you remember from the previous post, we've mentioned that when plugging a real DualSense SDL2 would use the `hidapi` driver to communicate with the controller. With this implementation that driver is still failing and SDL falls back to the `sysjoystick` driver.
+When I first tested my implementation using SDL2, I've noticed that some of the more advanced features like touchpad and
+LED were not recognised..  
+If you remember from the previous post, we've mentioned that when plugging a real DualSense SDL2 would use the `hidapi`
+driver to communicate with the controller. With this implementation that driver is still failing and SDL falls back to
+the `sysjoystick` driver.
 
 Why is it working on some games and not on others? Why is Steam correctly recognising it?
 
 ![a meme: Di Caprio in Inception saying "We need to go deeper"](/deeper.png)
 
-Buckle up! In the next post we'll go back to dive into the depths of SDL to understand what's going on!
+Buckle up! In the [next post]({{< ref "inputtino-uhid-3" >}}) we'll go back to dive into the depths of SDL to understand
+what's going on!
 
 [^4]: https://github.com/LizardByte/Sunshine/issues/3468
+
 [^5]: https://github.com/games-on-whales/inputtino/issues/16

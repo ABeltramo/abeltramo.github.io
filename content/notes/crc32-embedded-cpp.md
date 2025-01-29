@@ -9,10 +9,10 @@ At first, I've used
 `zlib`, but then I wanted to avoid forcing another dependency on users of the library since it's a very
 simple method.
 
-So I've found a simple C implementation in this [gist](https://gist.github.com/timepp/1f678e200d9e0f2a043a9ec6b3690635)
+I've found a simple C implementation in this [gist](https://gist.github.com/timepp/1f678e200d9e0f2a043a9ec6b3690635)
 and a more complex [C++ implementation](https://github.com/eternalharvest/crc32-11) that
-unfortunately [doesn't produce the right numbers](https://github.com/eternalharvest/crc32-11/issues/4), so I've decided
-to write my own.
+unfortunately [doesn't produce the right numbers](https://github.com/eternalharvest/crc32-11/issues/4),
+so I've decided to write my own.
 
 ```cpp
 #include <array>
@@ -59,7 +59,8 @@ auto crc = CRC32(reinterpret_cast<unsigned char *>(buffer.data()), buffer.length
 REQUIRE(crc == 0xcbf43926); // https://crccalc.com/?crc=123456789&method=CRC-32/ISO-HDLC&datatype=ascii&outtype=hex
 ```
 
-I quite liked the `iterator` version that the original C++ implementation had, although it doesn't apply to my use case. Here's a rewritten version of it:
+I quite liked the `iterator` version that the original C++ implementation had, although it doesn't apply to my use case.
+Here's a rewritten version of it:
 
 ```cpp 
 template<uint32_t poly, typename iterator_t>
