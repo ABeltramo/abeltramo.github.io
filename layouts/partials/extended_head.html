@@ -1,0 +1,10 @@
+{{ if .HasShortcode "vega" }}
+<script src="https://cdn.jsdelivr.net/npm/vega@6.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.29.0"></script>
+{{ end  }}
+
+{{ if .HasShortcode "plantuml" }}
+{{ $menu := resources.Get "js/rawdeflate.js" | js.Build }}
+<script type="text/javascript" src="{{ $menu.RelPermalink }}"></script>
+{{ end }}

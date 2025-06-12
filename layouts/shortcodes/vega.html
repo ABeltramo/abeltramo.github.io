@@ -1,0 +1,12 @@
+<div id="vis" style="width: 70%; height: auto; display: block; margin-bottom: 15px;"></div>
+
+
+{{ with .Page.Resources.Get (.Get "src") }}
+<script type="text/javascript">
+    var spec = {{ .Content | safeJS }};
+    vegaEmbed('#vis', spec, {
+        theme: 'dark',
+        renderer: "svg"
+    });
+</script>
+{{ end }}

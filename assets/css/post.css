@@ -143,3 +143,8 @@ blockquote {
 .code-toolbar {
     border: 0 !important;
 }
+
+/* VEGA Chart custom styles */
+.vg-tooltip table, .vg-tooltip th, .vg-tooltip td  {
+    border: none;
+}

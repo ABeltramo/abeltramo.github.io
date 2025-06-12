@@ -1,0 +1,372 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": {
+      "expr": "(MetricSelector == 'GPU_usage' ? 'GPU Usage' : MetricSelector == 'CPU_total_usage' ? 'CPU Total Usage' : 'FPS') + ' by Resolution and Pipeline Type'"
+    },
+    "fontSize": 16,
+    "anchor": "middle"
+  },
+  "params": [
+    {
+      "name": "MetricSelector",
+      "value": "GPU_usage",
+      "bind": {
+        "input": "select",
+        "options": [
+          "GPU_usage",
+          "CPU_total_usage",
+          "FPS"
+        ],
+        "labels": [
+          "GPU Usage (%)",
+          "CPU Total Usage (%)",
+          "FPS"
+        ],
+        "name": "Select Metric: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "MetricSelector == 'GPU_usage' ? datum.GPU_usage : MetricSelector == 'CPU_total_usage' ? datum.CPU_total_usage : datum.FPS",
+      "as": "SelectedMetric"
+    }
+  ],
+  "data": {
+    "values": [
+      {
+        "GPU": "AMD RX 9070",
+        "Resolution": "1080p",
+        "FPS": 60,
+        "GPU_usage": 6,
+        "CPU_total_usage": 2.5,
+        "CPU_single_core_usage": 40,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "AMD RX 9070",
+        "Resolution": "1440p",
+        "FPS": 60,
+        "GPU_usage": 10,
+        "CPU_total_usage": 4.3,
+        "CPU_single_core_usage": 70,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "AMD RX 9070",
+        "Resolution": "4K",
+        "FPS": 30,
+        "GPU_usage": 20,
+        "CPU_total_usage": 6.2,
+        "CPU_single_core_usage": 100,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "AMD RX 9070",
+        "Resolution": "1080p",
+        "FPS": 60,
+        "GPU_usage": 2,
+        "CPU_total_usage": 0.6,
+        "CPU_single_core_usage": 8,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "AMD RX 9070",
+        "Resolution": "1440p",
+        "FPS": 60,
+        "GPU_usage": 2,
+        "CPU_total_usage": 0.6,
+        "CPU_single_core_usage": 10,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "AMD RX 9070",
+        "Resolution": "4K",
+        "FPS": 60,
+        "GPU_usage": 2,
+        "CPU_total_usage": 1.5,
+        "CPU_single_core_usage": 16,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "Intel Arc A380",
+        "Resolution": "1080p",
+        "FPS": 50,
+        "GPU_usage": 50,
+        "CPU_total_usage": 2.5,
+        "CPU_single_core_usage": 40,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "Intel Arc A380",
+        "Resolution": "1440p",
+        "FPS": 23,
+        "GPU_usage": 83,
+        "CPU_total_usage": 2.5,
+        "CPU_single_core_usage": 40,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "Intel Arc A380",
+        "Resolution": "4K",
+        "FPS": 10,
+        "GPU_usage": 83,
+        "CPU_total_usage": 3.75,
+        "CPU_single_core_usage": 60,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "Intel Arc A380",
+        "Resolution": "1080p",
+        "FPS": 60,
+        "GPU_usage": 2,
+        "CPU_total_usage": 0.6,
+        "CPU_single_core_usage": 10,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "Intel Arc A380",
+        "Resolution": "1440p",
+        "FPS": 60,
+        "GPU_usage": 2,
+        "CPU_total_usage": 0.6,
+        "CPU_single_core_usage": 11,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "Intel Arc A380",
+        "Resolution": "4K",
+        "FPS": 60,
+        "GPU_usage": 2,
+        "CPU_total_usage": 1,
+        "CPU_single_core_usage": 16,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "Nvidia 3070",
+        "Resolution": "1080p",
+        "FPS": 60,
+        "GPU_usage": 30,
+        "CPU_total_usage": 2.5,
+        "CPU_single_core_usage": 40,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "Nvidia 3070",
+        "Resolution": "1440p",
+        "FPS": 60,
+        "GPU_usage": 62,
+        "CPU_total_usage": 4.3,
+        "CPU_single_core_usage": 70,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "Nvidia 3070",
+        "Resolution": "4K",
+        "FPS": 38,
+        "GPU_usage": 88,
+        "CPU_total_usage": 11.5,
+        "CPU_single_core_usage": 185,
+        "Pipeline_type": "old"
+      },
+      {
+        "GPU": "Nvidia 3070",
+        "Resolution": "1080p",
+        "FPS": 60,
+        "GPU_usage": 6,
+        "CPU_total_usage": 0.6,
+        "CPU_single_core_usage": 11,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "Nvidia 3070",
+        "Resolution": "1440p",
+        "FPS": 60,
+        "GPU_usage": 8,
+        "CPU_total_usage": 0.7,
+        "CPU_single_core_usage": 12,
+        "Pipeline_type": "zero copy"
+      },
+      {
+        "GPU": "Nvidia 3070",
+        "Resolution": "4K",
+        "FPS": 60,
+        "GPU_usage": 10,
+        "CPU_total_usage": 0.8,
+        "CPU_single_core_usage": 14,
+        "Pipeline_type": "zero copy"
+      }
+    ]
+  },
+  "facet": {
+    "row": {
+      "field": "GPU",
+      "type": "nominal",
+      "title": "GPU Model",
+      "header": {
+        "labelFontSize": 14,
+        "labelFontWeight": "bold"
+      }
+    }
+  },
+  "spec": {
+    "width": "container",
+    "height": 200,
+    "layer": [
+      {
+        "mark": {
+          "type": "bar",
+          "tooltip": true
+        },
+        "encoding": {
+          "x": {
+            "field": "Resolution",
+            "type": "ordinal",
+            "title": "Resolution",
+            "scale": {
+              "domain": [
+                "1080p",
+                "1440p",
+                "4K"
+              ]
+            },
+            "axis": {
+              "labelFontSize": 12,
+              "titleFontSize": 12,
+              "labelAngle": 0
+            }
+          },
+          "y": {
+            "field": "SelectedMetric",
+            "type": "quantitative",
+            "title": {
+              "expr": "MetricSelector == 'GPU_usage' ? 'GPU Usage (%)' : MetricSelector == 'CPU_total_usage' ? 'CPU Total Usage (%)' : 'FPS'"
+            },
+            "axis": {
+              "labelFontSize": 12,
+              "titleFontSize": 12
+            }
+          },
+          "color": {
+            "field": "Pipeline_type",
+            "type": "nominal",
+            "title": "Pipeline Type",
+            "scale": {
+              "domain": [
+                "old",
+                "zero copy"
+              ],
+              "range": [
+                "#A78BFA",
+                "#FF6B6B"
+              ]
+            },
+            "legend": {
+              "titleFontSize": 12,
+              "labelFontSize": 11
+            }
+          },
+          "xOffset": {
+            "field": "Pipeline_type",
+            "type": "nominal"
+          },
+          "tooltip": [
+            {
+              "field": "GPU",
+              "type": "nominal",
+              "title": "GPU"
+            },
+            {
+              "field": "Resolution",
+              "type": "ordinal",
+              "title": "Resolution"
+            },
+            {
+              "field": "Pipeline_type",
+              "type": "nominal",
+              "title": "Pipeline Type"
+            },
+            {
+              "field": "GPU_usage",
+              "type": "quantitative",
+              "title": "GPU Usage (%)"
+            },
+            {
+              "field": "FPS",
+              "type": "quantitative",
+              "title": "FPS"
+            },
+            {
+              "field": "CPU_total_usage",
+              "type": "quantitative",
+              "title": "CPU Total Usage (%)"
+            },
+            {
+              "field": "CPU_single_core_usage",
+              "type": "quantitative",
+              "title": "CPU Single Core Usage (%)"
+            }
+          ]
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "center",
+          "baseline": "bottom",
+          "dy": -5,
+          "fontSize": 11,
+          "fontWeight": "bold"
+        },
+        "encoding": {
+          "x": {
+            "field": "Resolution",
+            "type": "ordinal",
+            "scale": {
+              "domain": [
+                "1080p",
+                "1440p",
+                "4K"
+              ]
+            }
+          },
+          "y": {
+            "field": "SelectedMetric",
+            "type": "quantitative"
+          },
+          "xOffset": {
+            "field": "Pipeline_type",
+            "type": "nominal"
+          },
+          "text": {
+            "field": "SelectedMetric",
+            "type": "quantitative",
+            "format": ".0f"
+          },
+          "color": {
+            "value": "white"
+          }
+        }
+      }
+    ]
+  },
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    }
+  },
+  "config": {
+    "background": null,
+    "facet": {
+      "spacing": 30
+    },
+    "view": {
+      "stroke": "transparent"
+    }
+  }
+}
