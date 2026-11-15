@@ -5,3 +5,6 @@
 public/
 resources/
 .hugo_build.lock
+
+# book covers, fetched at build time by scripts/fetch-covers.mjs
+assets/covers/

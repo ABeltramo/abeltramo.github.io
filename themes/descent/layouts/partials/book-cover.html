@@ -1,0 +1,44 @@
+{{- /*
+  Cover image for one book, or an empty string when there is none.
+  Params: title, author, isbn, cover, sizes, class, eager.
+
+  A file in assets/covers/<isbn>.jpg wins. scripts/fetch-covers.mjs puts it
+  there before the build, so the browser loads the cover from this site
+  instead of Open Library. Without that file, the remote URL is used.
+*/ -}}
+{{- $title := .title | default "" -}}
+{{- $author := .author | default "" -}}
+{{- $isbn := .isbn | default "" -}}
+{{- $cover := .cover | default "" -}}
+{{- $sizes := .sizes | default "96px" -}}
+{{- $class := .class | default "book-img" -}}
+{{- $eager := .eager | default false -}}
+
+{{- $alt := $title -}}
+{{- if $author }}{{ $alt = printf "%s by %s" $title $author }}{{ end -}}
+
+{{- if and $isbn (not $cover) -}}
+  {{- with resources.Get (printf "covers/%s.jpg" $isbn) -}}
+    {{- $small := .Resize "160x webp q80" -}}
+    {{- $large := .Resize "320x webp q80" -}}
+    {{- $out := printf `<img class="%s" src="%s" srcset="%s 160w, %s 320w" sizes="%s" width="%d" height="%d" alt="%s" loading="%s" decoding="async">`
+        $class $large.RelPermalink $small.RelPermalink $large.RelPermalink $sizes $large.Width $large.Height $alt (cond $eager "eager" "lazy") -}}
+    {{- return ($out | safeHTML) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $cover -}}
+  {{- $src := . -}}
+  {{- if not (hasPrefix $src "http") }}{{ $src = $src | relURL }}{{ end -}}
+  {{- $out := printf `<img class="%s" src="%s" alt="%s" loading="%s" decoding="async">`
+      $class $src $alt (cond $eager "eager" "lazy") -}}
+  {{- return ($out | safeHTML) -}}
+{{- else -}}
+  {{- if $isbn -}}
+    {{- $out := printf `<img class="%s" src="https://covers.openlibrary.org/b/isbn/%s-L.jpg" alt="%s" loading="%s" decoding="async">`
+        $class $isbn $alt (cond $eager "eager" "lazy") -}}
+    {{- return ($out | safeHTML) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return "" -}}

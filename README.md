@@ -30,9 +30,18 @@ becomes the line under the entry on the timeline. A note also needs
 `kind: note`.
 
 A book needs `date`, `title`, `author` and `isbn`. A month is enough:
-`date: "2026-11"`. The cover comes from Open Library, and the cover links to
-the Open Library page for that ISBN. Set `cover` or `url` to override either
-one. See `themes/descent/README.md`.
+`date: "2026-11"`. The cover links to the Open Library page for that ISBN.
+Set `cover` or `url` to override either one. See `themes/descent/README.md`.
+
+The build does not load covers from Open Library in the browser. Run the
+fetch script once to keep them on this site:
+
+```sh
+node scripts/fetch-covers.mjs
+```
+
+The script writes `assets/covers/`, which is in `.gitignore`. CI keeps that
+folder in the Actions cache and downloads only the new covers.
 
 A deck is an external link to the presentations site. Run the sync script
 after you add a deck to the presentations repository:

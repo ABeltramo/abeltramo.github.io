@@ -125,12 +125,29 @@ Books live in `data/books.yaml`. There is no page per book.
 | `url` | Optional link override. |
 
 The ISBN is the last part of most shop URLs. A book with an ISBN needs no
-file in the repository: the browser asks `covers.openlibrary.org` for the
-cover and the cover links to the Open Library page for that edition.
+image in the repository, and the cover links to the Open Library page for
+that edition.
 
-Open Library answers with a small grey placeholder when it has no cover for
-the ISBN. Set `cover` to your own image in that case, or drop the `isbn` and
-use the gradient keys `c1` and `c2`.
+### Book covers
+
+Open Library is slow and every cover is a redirect to archive.org. The site
+does not load them from there. `scripts/fetch-covers.mjs` downloads each
+cover once into `assets/covers/<isbn>.jpg`, and Hugo resizes it to WebP and
+serves it from the site origin. The folder is in `.gitignore`, so the images
+never enter the git history. The CI workflow keeps the folder in the Actions
+cache and downloads only the covers that are new.
+
+```sh
+node scripts/fetch-covers.mjs          # fill assets/covers
+node scripts/fetch-covers.mjs --force  # download again
+```
+
+Without the folder, a local build falls back to the remote Open Library URL.
+A cover that Open Library does not have stays remote, or uses `cover`. Set
+`cover` to a file under `static/` to bypass both paths.
+
+The layouts use `partials/book-cover.html`. The partial returns the `<img>`
+markup, or an empty string when the book has no image.
 
 The `/books/` page shows every cover in a grid.
 

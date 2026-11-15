@@ -52,6 +52,19 @@ jobs:
 
       - uses: reitzig/actions-asciidoctor@v2.0.2
 
+      # Covers are downloaded once and kept in the Actions cache. They are
+      # not in git: the build writes them to public/, and nothing else.
+      - name: Restore cover cache
+        uses: actions/cache@v4
+        with:
+          path: assets/covers
+          key: covers-${{ hashFiles('data/books.yaml') }}
+          restore-keys: |
+            covers-
+
+      - name: Fetch book covers
+        run: node scripts/fetch-covers.mjs
+
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache

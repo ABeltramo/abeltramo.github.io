@@ -14,9 +14,6 @@
     {{- $d := partial "loose-date.html" .date -}}
     {{- $isbn := .isbn | default "" -}}
     {{- $cover := .cover | default "" -}}
-    {{- if and (not $cover) $isbn -}}
-      {{- $cover = printf "https://covers.openlibrary.org/b/isbn/%s-L.jpg" $isbn -}}
-    {{- end -}}
     {{- $url := .url | default "" -}}
     {{- if and (not $url) $isbn -}}
       {{- $url = printf "https://openlibrary.org/isbn/%s" $isbn -}}
@@ -33,6 +30,7 @@
       "url" $url
       "external" (hasPrefix $url "http")
       "cover" $cover
+      "isbn" $isbn
       "c1" (.c1 | default "#2a2f36")
       "c2" (.c2 | default "#11151a")
     ) -}}
