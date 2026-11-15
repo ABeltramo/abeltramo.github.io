@@ -174,6 +174,10 @@ access to the other repository.
 The timeline markup comes from Hugo, so a page renders without JavaScript.
 The cable is the only part that needs the browser.
 
+The skyline SVG takes its height from the viewport width. The `clamp()` rule in
+`assets/css/descent.css` keeps the peaks inside the frame on wide screens. Past
+the height cap the SVG crops the bottom of the drawing, which is flat fill.
+
 ## The cable
 
 `assets/js/timeline.js` finds every element with the `data-timeline`

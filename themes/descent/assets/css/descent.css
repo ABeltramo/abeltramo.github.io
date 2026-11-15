@@ -46,7 +46,10 @@
 
 body {
   margin: 0;
+  /* svh keeps the height fixed while the Android toolbar hides and shows,
+     so scrolling does not trigger a relayout. vh is the fallback. */
   min-height: 100vh;
+  min-height: 100svh;
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.55;
@@ -183,47 +186,6 @@ a {
   background-repeat: no-repeat;
 }
 
-/* rock detail: sparse strata near the summit, denser rock lower down.
-   The horizontal mask clears the reading column. */
-.rock-face::before,
-.rock-face::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-repeat: repeat;
-  background-position: center top;
-}
-
-.rock-face::before {
-  background-image: url("{{ .rockA }}");
-  background-size: 900px 960px;
-  opacity: 0.9;
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0px, #000 520px, #000 100%),
-    linear-gradient(to right, #000 0%, #000 16%, transparent 40%, transparent 60%, #000 84%, #000 100%);
-  mask-image:
-    linear-gradient(to bottom, transparent 0px, #000 520px, #000 100%),
-    linear-gradient(to right, #000 0%, #000 16%, transparent 40%, transparent 60%, #000 84%, #000 100%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-}
-
-.rock-face::after {
-  background-image: url("{{ .rockB }}");
-  background-size: 700px 760px;
-  opacity: 0.8;
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 700px, #000 1700px, #000 100%),
-    linear-gradient(to right, #000 0%, #000 15%, transparent 38%, transparent 62%, #000 85%, #000 100%);
-  mask-image:
-    linear-gradient(to bottom, transparent 700px, #000 1700px, #000 100%),
-    linear-gradient(to right, #000 0%, #000 15%, transparent 38%, transparent 62%, #000 85%, #000 100%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-}
-
 /* fades the last of the rock into the base colour, so a short page
    ends on the same tone as the canvas around it */
 .valley {
@@ -235,13 +197,16 @@ a {
   background: linear-gradient(to bottom, rgba(8, 10, 14, 0), #080a0e 75%);
 }
 
-/* ridgelines where the mountain meets the sky */
+/* ridgelines where the mountain meets the sky.
+   The height follows the width, so wide screens never crop the peaks.
+   Past the height cap only the bottom of the drawing is cropped, and
+   that part is flat ridge fill. */
 .skyline {
   position: absolute;
   top: -120px;
   left: 50%;
   width: 100vw;
-  height: 400px;
+  height: clamp(340px, 27.78vw, 620px);
   translate: -50% 0;
   pointer-events: none;
   z-index: 0;
@@ -259,6 +224,8 @@ a {
   fill: #0c1220;
 }
 
+/* thin outline along the back and mid ridges, so the peaks read
+   against the sky */
 .crest {
   fill: none;
   stroke: #cfdcf0;

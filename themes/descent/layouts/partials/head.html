@@ -1,7 +1,4 @@
-{{- $rockA := (resources.Get "rock-a.svg" | fingerprint).RelPermalink -}}
-{{- $rockB := (resources.Get "rock-b.svg" | fingerprint).RelPermalink -}}
-
-{{- $descent := resources.Get "css/descent.css" | resources.ExecuteAsTemplate "css/descent.css" (dict "rockA" $rockA "rockB" $rockB) -}}
+{{- $descent := resources.Get "css/descent.css" -}}
 {{- $css := slice $descent (resources.Get "css/prose.css") (resources.Get "css/chroma.css") | resources.Concat "css/site.css" | minify | fingerprint -}}
 
 <meta charset="utf-8">
