@@ -33,6 +33,10 @@
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
+  /* the skyline box: one value drives the SVG height, the rock gradient
+     and the blend below the mountain, so the three always line up */
+  --skyline-h: clamp(340px, 27.78vw, 620px);
+
   --left-w: 186px;
   --cable-gap: 84px;
   --axis-w: 56px;
@@ -169,21 +173,37 @@ a {
 .rock-face {
   position: relative;
   /* the last stop is transparent, so a short page fades into the base
-     colour instead of ending on a hard edge */
+     colour instead of ending on a hard edge. The stops below the
+     skyline use the same width based offset, so the rock tone at the
+     lower edge of the SVG matches the ridge fill at every width. */
   background-color: #080a0e;
   background-image: linear-gradient(
     180deg,
     #0c1220 0px,
-    #0d1322 300px,
-    #151c2a 520px,
-    #171e29 700px,
-    #131922 900px,
-    #0f141b 1200px,
-    #0b0e13 1650px,
-    rgba(9, 11, 16, 0.6) 1950px,
-    rgba(8, 10, 14, 0) 2250px
+    #0c1220 calc(var(--skyline-h) - 90px),
+    #151c2a calc(var(--skyline-h) + 260px),
+    #171e29 calc(var(--skyline-h) + 440px),
+    #131922 calc(var(--skyline-h) + 640px),
+    #0f141b calc(var(--skyline-h) + 940px),
+    #0b0e13 calc(var(--skyline-h) + 1390px),
+    rgba(9, 11, 16, 0.6) calc(var(--skyline-h) + 1690px),
+    rgba(8, 10, 14, 0) calc(var(--skyline-h) + 1990px)
   );
   background-repeat: no-repeat;
+}
+
+/* blends the lower edge of the skyline into the rock, so no fill edge
+   shows as a line across the page on any width */
+.rock-face::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--skyline-h) - 210px);
+  height: 90px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(12, 18, 32, 0) 0%, #0c1220 92%);
 }
 
 /* fades the last of the rock into the base colour, so a short page
@@ -199,14 +219,14 @@ a {
 
 /* ridgelines where the mountain meets the sky.
    The height follows the width, so wide screens never crop the peaks.
-   Past the height cap only the bottom of the drawing is cropped, and
-   that part is flat ridge fill. */
+   Past the height cap the artwork is cropped at the bottom, where the
+   blend below the mountain hides the edge. */
 .skyline {
   position: absolute;
   top: -120px;
   left: 50%;
   width: 100vw;
-  height: clamp(340px, 27.78vw, 620px);
+  height: var(--skyline-h);
   translate: -50% 0;
   pointer-events: none;
   z-index: 0;
@@ -891,7 +911,6 @@ body.kind-page .page {
 
   .skyline {
     top: -110px;
-    height: 340px;
   }
 
   .tl,
