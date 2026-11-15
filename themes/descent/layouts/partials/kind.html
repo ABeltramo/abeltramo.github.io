@@ -1,0 +1,10 @@
+{{- /* Human label for a page: front matter `kind`, else the section name. */ -}}
+{{- $kind := "post" -}}
+{{- if eq .Section "books" -}}
+  {{- $kind = "book" -}}
+{{- else if .Params.kind -}}
+  {{- $kind = .Params.kind -}}
+{{- end -}}
+{{- $labels := dict "post" "Post" "note" "Note" "book" "Book" "slides" "Slides" -}}
+{{- $label := index $labels $kind | default ($kind | humanize) -}}
+{{- return $label -}}

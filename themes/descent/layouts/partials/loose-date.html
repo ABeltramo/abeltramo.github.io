@@ -1,0 +1,10 @@
+{{- /*
+  Turns a data date into a time. A full date stays as it is. A year and a
+  month, "2026-11", becomes the first day of that month, so the entry still
+  has a place on the timeline. Returns a time.
+*/ -}}
+{{- $raw := printf "%v" . -}}
+{{- if findRE `^\d{4}-\d{2}$` $raw -}}
+  {{- $raw = printf "%s-01" $raw -}}
+{{- end -}}
+{{- return time.AsTime $raw -}}

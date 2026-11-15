@@ -1,0 +1,4 @@
+{{- /* A camp: the year where the entries below it start. */ -}}
+<h2 class="tl-year" id="y{{ .year }}">
+  <span>{{ if .camp }}{{ partial "camp-icon.html" . }}{{ end }}{{ .year }}</span>
+</h2>

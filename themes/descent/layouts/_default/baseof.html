@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Lang | default "en" }}">
+<head>
+  {{ block "title" . }}
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} :: {{ site.Title }}{{ end }}</title>
+  {{ end }}
+  {{ partial "head.html" . }}
+</head>
+<body class="kind-{{ .Kind }}{{ if .IsHome }} is-home{{ end }}">
+
+{{ partial "svg-defs.html" . }}
+{{ partial "starfield.html" . }}
+
+{{ partial "hero.html" . }}
+
+<div class="rock-face">
+  {{ partial "skyline.html" . }}
+
+  <main class="{{ if .IsHome }}tl{{ else }}page{{ end }}">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+  <div class="valley" aria-hidden="true"></div>
+</div>
+
+{{ $js := resources.Get "js/timeline.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" defer></script>
+{{ if templates.Exists "partials/extended_footer.html" }}{{ partial "extended_footer.html" . }}{{ end }}
+</body>
+</html>

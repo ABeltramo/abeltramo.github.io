@@ -1,0 +1,35 @@
+{{- $rockA := (resources.Get "rock-a.svg" | fingerprint).RelPermalink -}}
+{{- $rockB := (resources.Get "rock-b.svg" | fingerprint).RelPermalink -}}
+
+{{- $descent := resources.Get "css/descent.css" | resources.ExecuteAsTemplate "css/descent.css" (dict "rockA" $rockA "rockB" $rockB) -}}
+{{- $css := slice $descent (resources.Get "css/prose.css") (resources.Get "css/chroma.css") | resources.Concat "css/site.css" | minify | fingerprint -}}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{{ if .IsHome }}{{ site.Params.description }}{{ else if .Description }}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}">
+<meta name="theme-color" content="#0c1220">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+<link rel="icon" href="{{ "favicon.png" | relURL }}" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+
+<meta property="og:locale" content="{{ site.Language.Lang | default "en" }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ if .IsHome }}{{ site.Params.description }}{{ else if .Description }}{{ .Description | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:image" content="{{ "og-image.png" | absURL }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ site.Params.tagline }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ "og-image.png" | absURL }}">
+
+{{ with .OutputFormats.Get "RSS" }}
+<link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ site.Title }}">
+{{ end }}
+
+{{ if templates.Exists "partials/extended_head.html" }}{{ partial "extended_head.html" . }}{{ end }}

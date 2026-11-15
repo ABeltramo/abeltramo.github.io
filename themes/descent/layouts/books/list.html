@@ -1,0 +1,34 @@
+{{ define "main" }}
+  <div class="books-grid">
+    {{ range sort hugo.Data.books "date" "desc" }}
+      {{- $book := . -}}
+      {{- $d := partial "loose-date.html" .date -}}
+      {{- $isbn := .isbn | default "" -}}
+      {{- $cover := .cover | default "" -}}
+      {{- if and (not $cover) $isbn -}}
+        {{- $cover = printf "https://covers.openlibrary.org/b/isbn/%s-L.jpg" $isbn -}}
+      {{- end -}}
+      {{- $url := .url | default "" -}}
+      {{- if and (not $url) $isbn -}}
+        {{- $url = printf "https://openlibrary.org/isbn/%s" $isbn -}}
+      {{- end -}}
+      {{- if $url }}<a class="book book--large" href="{{ $url }}" target="_blank" rel="noopener">{{ else }}<div class="book book--large">{{ end }}
+        <span class="book-cover" style="--c1:{{ .c1 | default "#2a2f36" }};--c2:{{ .c2 | default "#11151a" }}">
+          {{- with $cover -}}
+          {{- $src := . -}}
+          {{- if not (hasPrefix $src "http") }}{{ $src = $src | relURL }}{{ end -}}
+          <img class="book-img" src="{{ $src }}" alt="{{ $book.title }} by {{ $book.author }}" loading="lazy">
+          {{- else -}}
+          <span class="book-title">{{ .title }}</span>
+          <span class="book-author">{{ .author }}</span>
+          {{- end -}}
+        </span>
+        <span class="book-info">
+          <span class="book-name">{{ .title }}</span>
+          <span class="book-by">{{ .author }}</span>
+          <span class="book-date">{{ $d.Format "Jan 2006" }}</span>
+        </span>
+      {{ if $url }}</a>{{ else }}</div>{{ end }}
+    {{ end }}
+  </div>
+{{ end }}

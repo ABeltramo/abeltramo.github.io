@@ -1,0 +1,59 @@
+{{- /*
+  Collects every entry the timeline shows, newest first.
+  Params: pages (slice of pages), books (bool), presentations (bool).
+  Returns a slice of item dicts.
+*/ -}}
+{{- $items := slice -}}
+
+{{- range .pages | default slice }}
+  {{- $items = $items | append (partial "timeline/item-page.html" .) -}}
+{{- end -}}
+
+{{- if .books }}
+  {{- range hugo.Data.books }}
+    {{- $d := partial "loose-date.html" .date -}}
+    {{- $isbn := .isbn | default "" -}}
+    {{- $cover := .cover | default "" -}}
+    {{- if and (not $cover) $isbn -}}
+      {{- $cover = printf "https://covers.openlibrary.org/b/isbn/%s-L.jpg" $isbn -}}
+    {{- end -}}
+    {{- $url := .url | default "" -}}
+    {{- if and (not $url) $isbn -}}
+      {{- $url = printf "https://openlibrary.org/isbn/%s" $isbn -}}
+    {{- end -}}
+    {{- $items = $items | append (dict
+      "kind" "book"
+      "label" "Book"
+      "ts" $d.Unix
+      "year" ($d.Format "2006")
+      "date" $d
+      "title" .title
+      "author" (.author | default "")
+      "desc" ""
+      "url" $url
+      "external" (hasPrefix $url "http")
+      "cover" $cover
+      "c1" (.c1 | default "#2a2f36")
+      "c2" (.c2 | default "#11151a")
+    ) -}}
+  {{- end }}
+{{- end -}}
+
+{{- if .presentations }}
+  {{- range hugo.Data.presentations }}
+    {{- $d := time.AsTime .date -}}
+    {{- $items = $items | append (dict
+      "kind" "slides"
+      "label" "Slides"
+      "ts" $d.Unix
+      "year" ($d.Format "2006")
+      "date" $d
+      "title" .title
+      "desc" (.description | default "")
+      "url" .url
+      "external" true
+    ) -}}
+  {{- end }}
+{{- end -}}
+
+{{- return sort $items "ts" "desc" -}}

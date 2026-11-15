@@ -1,0 +1,15 @@
+{{- /* A cover and its date. Links out only when the data gives a url. */ -}}
+{{- $url := .url | default "" -}}
+{{- if $url }}<a class="book" href="{{ $url }}"{{ if .external }} target="_blank" rel="noopener"{{ end }}>{{ else }}<div class="book">{{ end }}
+  <span class="book-cover" style="--c1:{{ .c1 }};--c2:{{ .c2 }}">
+    {{- with .cover -}}
+    {{- $src := . -}}
+    {{- if not (hasPrefix $src "http") }}{{ $src = $src | relURL }}{{ end -}}
+    <img class="book-img" src="{{ $src }}" alt="{{ $.title }} by {{ $.author }}" loading="lazy">
+    {{- else -}}
+    <span class="book-title">{{ .title }}</span>
+    <span class="book-author">{{ .author }}</span>
+    {{- end -}}
+  </span>
+  <span class="book-date">{{ .date.Format "Jan 2006" }}</span>
+{{ if $url }}</a>{{ else }}</div>{{ end }}

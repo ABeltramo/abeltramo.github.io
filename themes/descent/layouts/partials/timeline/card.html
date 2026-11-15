@@ -1,0 +1,9 @@
+{{- /* A post, note or deck. */ -}}
+<a class="card" href="{{ .url }}"{{ if .external }} target="_blank" rel="noopener"{{ end }}>
+  <span class="card-meta">
+    <span class="kind kind--{{ .kind }}">{{ .label }}</span>
+    <time datetime="{{ .date.Format "2006-01-02" }}">{{ .date.Format "2006-01-02" }}</time>
+  </span>
+  <span class="card-title">{{ .title }}</span>
+  {{ with .desc }}<span class="card-desc">{{ . }}</span>{{ end }}
+</a>

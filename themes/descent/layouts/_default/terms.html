@@ -1,0 +1,12 @@
+{{ define "main" }}
+  <div class="term-list">
+    {{ range .Pages }}
+    <a class="term" href="{{ .RelPermalink }}">
+      <span class="term-name">{{ .Title }}</span>
+      <span class="term-count">{{ len .Pages }}</span>
+    </a>
+    {{ else }}
+    <p class="tl-empty">No {{ .Title | lower }} yet.</p>
+    {{ end }}
+  </div>
+{{ end }}

@@ -1,0 +1,185 @@
+/* ============================================================
+   Syntax highlighting. Chroma emits classes; the colours follow
+   the kind accents used by the timeline.
+   ============================================================ */
+
+.chroma {
+  color: #d7dbe0;
+  background: none;
+}
+
+.chroma .lnt,
+.chroma .ln {
+  margin-right: 1em;
+  padding: 0 0.4em;
+  color: #4b555f;
+}
+
+.chroma .hl {
+  display: block;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* comments */
+.chroma .c,
+.chroma .ch,
+.chroma .cm,
+.chroma .c1,
+.chroma .cs,
+.chroma .cp,
+.chroma .cpf {
+  color: #6a747c;
+  font-style: italic;
+}
+
+/* keywords */
+.chroma .k,
+.chroma .kc,
+.chroma .kd,
+.chroma .kn,
+.chroma .kp,
+.chroma .kr,
+.chroma .kt {
+  color: #9aacdf;
+}
+
+.chroma .kc,
+.chroma .kd,
+.chroma .kt {
+  font-weight: 500;
+}
+
+/* names */
+.chroma .n,
+.chroma .nx,
+.chroma .nl,
+.chroma .nx {
+  color: #d7dbe0;
+}
+
+.chroma .na,
+.chroma .nt {
+  color: #cf9b82;
+}
+
+.chroma .nb,
+.chroma .bp {
+  color: #a9c0d8;
+}
+
+.chroma .nc,
+.chroma .nn,
+.chroma .ne {
+  color: #c9d3dd;
+  font-weight: 500;
+}
+
+.chroma .nf,
+.chroma .fm {
+  color: #cfd8e3;
+}
+
+.chroma .no,
+.chroma .py {
+  color: #e3b47c;
+}
+
+.chroma .nv,
+.chroma .vc,
+.chroma .vg,
+.chroma .vi,
+.chroma .vm {
+  color: #d7dbe0;
+}
+
+.chroma .nd {
+  color: #b6a6d4;
+}
+
+.chroma .ni {
+  color: #c9d3dd;
+}
+
+/* strings */
+.chroma .s,
+.chroma .sa,
+.chroma .sb,
+.chroma .sc,
+.chroma .dl,
+.chroma .sd,
+.chroma .s2,
+.chroma .se,
+.chroma .sh,
+.chroma .si,
+.chroma .sx,
+.chroma .sr,
+.chroma .s1,
+.chroma .ss {
+  color: #8fbfa9;
+}
+
+.chroma .se {
+  font-weight: 500;
+}
+
+/* numbers */
+.chroma .m,
+.chroma .mb,
+.chroma .mf,
+.chroma .mh,
+.chroma .mi,
+.chroma .il,
+.chroma .mo {
+  color: #e3b47c;
+}
+
+/* operators and punctuation */
+.chroma .o,
+.chroma .ow,
+.chroma .p,
+.chroma .pi {
+  color: #9aa4ad;
+}
+
+/* generic diffs and output */
+.chroma .gd {
+  color: #cf9b82;
+}
+
+.chroma .gi {
+  color: #8fbfa9;
+}
+
+.chroma .ge {
+  font-style: italic;
+}
+
+.chroma .gs {
+  font-weight: 600;
+}
+
+.chroma .gh,
+.chroma .gu {
+  color: #9aacdf;
+}
+
+.chroma .gp {
+  color: #6a747c;
+}
+
+.chroma .gt {
+  color: #cf9b82;
+}
+
+.chroma .gr {
+  color: #cf9b82;
+}
+
+.chroma .err {
+  color: #f0c8b6;
+  background: rgba(207, 155, 130, 0.14);
+}
+
+.chroma .w {
+  color: transparent;
+}

@@ -1,0 +1,14 @@
+{{- /* One row: cable node, left cell, right cell. */ -}}
+<div class="tl-row">
+  <span class="tl-node tl-node--row">{{ partial "anchor.html" . }}</span>
+  {{- if .left }}
+  <div class="tl-cell tl-cell--left tl-cell--{{ .left.kind }}" data-kind="{{ .left.kind }}">{{ partial "timeline/cell.html" .left }}</div>
+  {{- else }}
+  <div class="tl-cell tl-cell--left is-empty"></div>
+  {{- end }}
+  {{- if .right }}
+  <div class="tl-cell tl-cell--right tl-cell--{{ .right.kind }}" data-kind="{{ .right.kind }}">{{ partial "timeline/cell.html" .right }}</div>
+  {{- else }}
+  <div class="tl-cell tl-cell--right is-empty"></div>
+  {{- end }}
+</div>

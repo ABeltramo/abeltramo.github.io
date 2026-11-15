@@ -1,0 +1,18 @@
+{{ define "main" }}
+  {{- $sections := site.Params.mainSections | default (slice "writing") -}}
+  {{- $pages := where site.RegularPages "Section" "in" $sections -}}
+  {{- $items := partial "timeline/items.html" (dict "pages" $pages "books" true "presentations" true) -}}
+
+  {{- if $items }}
+  <div class="tl-host" data-timeline>
+    {{ partial "timeline/rope-slot.html" . }}
+    {{ partial "timeline/paired.html" (dict "items" $items "camp" true) }}
+  </div>
+  {{- end }}
+
+  {{ with .Content }}
+  <section class="about">
+    {{ . }}
+  </section>
+  {{ end }}
+{{ end }}

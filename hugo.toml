@@ -1,81 +1,63 @@
 baseURL = '/'
-languageCode = 'en-us'
+locale = 'en-us'
 title = 'ABeltramo'
-theme = "terminal"
+theme = "descent"
 
 [params]
 
-contentTypeName = "blog"
+# the content sections the timeline shows
+mainSections = ["writing"]
 
-# if you set this to 0, only submenu trigger will be visible
-showMenuItems = 4
+# the sentence on the summit
+tagline = "Software, open source, and other things I find interesting."
+# the line under the summit
+description = "Posts, notes, slides and books, newest first."
 
-# show selector to switch language
-showLanguageSelector = false
+# brand in the header, split on the dot
+brand = "abeltra.me"
 
-# set theme to full screen width
-fullWidthTheme = false
-
-# center theme with default width
-centerTheme = true
-
-# if your resource directory contains an image called `cover.(jpg|png|webp)`,
-# then the file will be used as a cover automatically.
-# With this option you don't have to put the `cover` param in a front-matter.
-autoCover = false
-
-# set post to show the last updated
-# If you use git, you can set `enableGitInfo` to `true` and then post will automatically get the last updated
-showLastUpdated = false
+copyright = "© ABeltramo"
 
 [params.author]
 email = 'beltramo.ale@gmail.com'
 name = 'ABeltramo'
 
-[languages]
-[languages.en]
-languageName = "English"
-title = "ABeltramo"
+[markup]
+  [markup.highlight]
+    # the theme carries its own token colours
+    noClasses = false
+    lineNos = false
+    codeFences = true
+    guessSyntax = true
 
-[languages.en.params]
-subtitle = "Personal blog and notes from ABeltramo"
-owner = ""
-keywords = ""
-copyright = "© ABeltramo"
-menuMore = "Show more"
-readMore = "Read more"
-readOtherPosts = "Read other posts"
-newerPosts = "Newer posts"
-olderPosts = "Older posts"
-missingContentMessage = "Page not found..."
-missingBackButtonLabel = "Back to home page"
-minuteReadingTime = "min read"
-words = "words"
-
-[languages.en.params.logo]
-logoText = "ABeltramo"
-logoHomeLink = "/"
+  [markup.goldmark.renderer]
+    unsafe = false
 
 [menus]
 [[menus.main]]
-name = "Blog"
-url = "/blog"
+name = "Writing"
+url = "/writing/"
 weight = 10
 
 [[menus.main]]
-name = "Notes"
-url = "/notes"
-weight = 20
+name = "Slides"
+url = "/presentations/"
+weight = 30
+
+[[menus.main]]
+name = "Books"
+url = "/books/"
+weight = 40
 
 [[menus.main]]
 name = "Github"
 url = "https://github.com/ABeltramo"
-weight = 30
+weight = 50
 
 [[menus.main]]
 name = "RSS"
 url = "/index.xml"
-weight = 40
+weight = 60
 
 # Allow asciidoctor
 [security]

@@ -1,0 +1,27 @@
+{{- /*
+  Section and term layout: the date on the left, the entry on the right.
+  Params: items, camp (bool).
+*/ -}}
+{{- $items := .items -}}
+{{- $camp := .camp | default false -}}
+
+{{- $years := slice -}}
+{{- range $items -}}
+  {{- if not (in $years .year) }}{{ $years = $years | append .year }}{{ end -}}
+{{- end }}
+
+<div class="tl-flow">
+{{- range $yi, $year := $years }}
+  {{- $yearItems := where $items "year" $year -}}
+
+  {{ partial "timeline/year.html" (dict "year" $year "camp" $camp) }}
+
+  {{- range $yearItems }}
+  <div class="tl-row">
+    <span class="tl-node tl-node--row">{{ partial "anchor.html" . }}</span>
+    <div class="tl-cell tl-cell--left tl-cell--date"><time datetime="{{ .date.Format "2006-01-02" }}">{{ .date.Format "02 Jan 2006" }}</time></div>
+    <div class="tl-cell tl-cell--right tl-cell--{{ .kind }}" data-kind="{{ .kind }}">{{ partial "timeline/card.html" . }}</div>
+  </div>
+  {{- end }}
+{{- end }}
+</div>

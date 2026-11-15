@@ -1,0 +1,22 @@
+{{ define "main" }}
+  {{- $kind := .Params.kind | default "post" -}}
+  <article class="post" data-kind="{{ $kind }}">
+    <div class="prose">
+      {{ .Content }}
+    </div>
+
+    {{ with .Params.tags }}
+    <p class="post-tags">
+      {{ range . }}<a class="tag" href="{{ (printf "tags/%s/" (urlize .)) | relURL }}">#{{ . }}</a>{{ end }}
+    </p>
+    {{ end }}
+
+    <footer class="post-foot">
+      <span class="post-foot-meta">{{ .Date.Format "02 Jan 2006" }}{{ with .Params.author }} · {{ . }}{{ end }}{{ if and site.Params.showReadingTime .ReadingTime }} · {{ .ReadingTime }} min{{ end }}</span>
+      <span class="post-foot-links">
+        {{ with .PrevInSection }}<a href="{{ .RelPermalink }}">← {{ .Title }}</a>{{ end }}
+        {{ with .NextInSection }}<a href="{{ .RelPermalink }}">{{ .Title }} →</a>{{ end }}
+      </span>
+    </footer>
+  </article>
+{{ end }}

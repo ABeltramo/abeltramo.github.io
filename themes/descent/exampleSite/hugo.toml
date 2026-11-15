@@ -1,0 +1,38 @@
+baseURL = "https://example.org/"
+title = "Descent example"
+theme = "descent"
+
+[params]
+  mainSections = ["writing"]
+
+  tagline = "Software, open source, and other things I find interesting."
+  description = "Posts, notes, slides and books, newest first."
+  brand = "descent.example"
+  copyright = "© Descent"
+
+[params.author]
+  name = "Descent"
+  email = "hello@example.org"
+
+[markup.highlight]
+  noClasses = false
+
+[[menus.main]]
+  name = "Blog"
+  url = "/blog/"
+  weight = 10
+
+[[menus.main]]
+  name = "Notes"
+  url = "/notes/"
+  weight = 20
+
+[[menus.main]]
+  name = "Books"
+  url = "/books/"
+  weight = 30
+
+[[menus.main]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 40

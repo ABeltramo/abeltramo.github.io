@@ -1,0 +1,57 @@
+{{- /*
+  Home layout: books on the left, everything else on the right.
+  Each book takes the unused card closest in date, rows sort by newest date.
+  Params: items, camp (bool).
+*/ -}}
+{{- $items := .items -}}
+{{- $camp := .camp | default false -}}
+
+{{- /* years, newest first */ -}}
+{{- $years := slice -}}
+{{- range $items -}}
+  {{- if not (in $years .year) }}{{ $years = $years | append .year }}{{ end -}}
+{{- end }}
+
+<div class="tl-flow">
+{{- range $yi, $year := $years }}
+  {{- $yearItems := where $items "year" $year -}}
+  {{- $books := where $yearItems "kind" "book" -}}
+  {{- $cards := where $yearItems "kind" "ne" "book" -}}
+  {{- $used := slice -}}
+  {{- $rows := slice -}}
+
+  {{- range $books }}
+    {{- $book := . -}}
+    {{- $best := -1 -}}
+    {{- $bestGap := 0 -}}
+    {{- range $ci, $card := $cards }}
+      {{- if not (in $used $ci) }}
+        {{- $gap := math.Abs (sub $book.ts $card.ts) -}}
+        {{- if or (eq $best -1) (lt $gap $bestGap) }}
+          {{- $best = $ci -}}
+          {{- $bestGap = $gap -}}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if ge $best 0 }}
+      {{- $used = $used | append $best -}}
+      {{- $card := index $cards $best -}}
+      {{- $rows = $rows | append (dict "left" $book "right" $card "key" (cond (gt $book.ts $card.ts) $book.ts $card.ts)) -}}
+    {{- else }}
+      {{- $rows = $rows | append (dict "left" $book "right" false "key" $book.ts) -}}
+    {{- end }}
+  {{- end }}
+
+  {{- range $ci, $card := $cards }}
+    {{- if not (in $used $ci) }}
+      {{- $rows = $rows | append (dict "left" false "right" $card "key" $card.ts) -}}
+    {{- end }}
+  {{- end }}
+
+  {{ partial "timeline/year.html" (dict "year" $year "camp" $camp) }}
+
+  {{- range (sort $rows "key" "desc") }}
+  {{ partial "timeline/row.html" . }}
+  {{- end }}
+{{- end }}
+</div>

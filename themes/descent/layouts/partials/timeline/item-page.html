@@ -1,0 +1,15 @@
+{{- /* One content page as a timeline item. Returns a dict. */ -}}
+{{- $kind := .Params.kind | default "post" -}}
+{{- $desc := .Description | default "" -}}
+{{- if eq $desc "" }}{{ $desc = .Summary | plainify | truncate 130 "" }}{{ end -}}
+{{- return dict
+  "kind" $kind
+  "label" (partial "kind.html" .)
+  "ts" .Date.Unix
+  "year" (.Date.Format "2006")
+  "date" .Date
+  "title" .Title
+  "desc" $desc
+  "url" .RelPermalink
+  "external" false
+-}}

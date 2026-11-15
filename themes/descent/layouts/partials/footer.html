@@ -1,0 +1,8 @@
+<footer class="site-foot">
+  <span>{{ site.Params.copyright | default (printf "© %s" site.Title) }}</span>
+  <span class="site-foot-links">
+    {{ with site.Params.author.email }}<a href="mailto:{{ . }}">Email</a>{{ end }}
+    <a href="{{ "index.xml" | relURL }}">RSS</a>
+    <a href="{{ "sitemap.xml" | relURL }}">Sitemap</a>
+  </span>
+</footer>

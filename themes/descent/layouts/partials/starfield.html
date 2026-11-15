@@ -1,0 +1,19 @@
+{{/*
+  Night sky. The star field is derived from arithmetic on the star index,
+  so the sky is identical on every build instead of reshuffling.
+*/}}
+<svg class="starfield" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+  <g fill="#dfe8f6">
+    {{- range $i := seq 1 190 }}
+    {{- $x := mod (mul $i 613) 1440 }}
+    {{- $y := mod (mul $i 977) 470 }}
+    {{- $r := add 0.5 (div (float (mod (mul $i 29) 5)) 5) }}
+    {{- $o := div (float (add 16 (mod (mul $i 53) 68))) 100 }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="{{ printf "%.1f" $r }}" opacity="{{ printf "%.2f" $o }}" />
+    {{- if eq (mod $i 23) 0 }}
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="2" opacity="0.85" />
+    <circle cx="{{ $x }}" cy="{{ $y }}" r="5" opacity="0.10" />
+    {{- end }}
+    {{- end }}
+  </g>
+</svg>

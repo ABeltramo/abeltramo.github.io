@@ -1,0 +1,13 @@
+name = "descent"
+license = "MIT"
+licenselink = "https://github.com/ABeltramo/abeltramo.github.io/blob/master/LICENSE"
+description = "A dark climbing-timeline theme: night sky at the summit, a steel cable through carabiners down the rock face."
+homepage = "https://abeltra.me"
+demosite = "https://abeltra.me"
+tags = ["blog", "dark", "timeline", "minimal", "personal"]
+features = ["blog", "notes", "books", "timeline"]
+min_version = "0.137.0"
+
+[author]
+  name = "ABeltramo"
+  homepage = "https://abeltra.me"

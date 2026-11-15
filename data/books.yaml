@@ -1,0 +1,23 @@
+# Reading list. Shown on the home timeline and on /books/.
+#
+# date    "YYYY-MM" is enough; the entry lands on the first day of that month.
+# title   book title
+# author  who wrote it
+# isbn    the ISBN of the edition. The cover comes from Open Library and the
+#         entry links to https://openlibrary.org/isbn/<isbn>
+# cover   optional image override, for example /images/books/wool.jpg
+# url     optional link override, for example a publisher page
+- date: "2026-11"
+  title: Wool
+  author: Hugh Howey
+  isbn: "9781804940822"
+
+- date: "2026-09"
+  title: Project Hail Mary
+  author: Andy Weir
+  isbn: "9781529157468"
+
+- date: "2026-05"
+  title: Upgrade
+  author: Blake Crouch
+  isbn: "9781529045376"

@@ -1,0 +1,51 @@
+{{- $home := site.Home -}}
+{{- $brand := site.Params.brand | default site.Title -}}
+{{- $parts := split $brand "." -}}
+
+<header class="hero">
+  <div class="hero-top">
+    <a class="brand" href="{{ $home.RelPermalink }}">{{ index $parts 0 }}{{ if gt (len $parts) 1 }}<span class="dot">.</span>{{ delimit (after 1 $parts) "." }}{{ end }}</a>
+    <nav class="site-nav">
+      {{- range site.Menus.main }}
+      {{- $href := .URL }}
+      {{- if not (or (hasPrefix $href "http") (hasPrefix $href "/")) }}{{ $href = $href | relURL }}{{ end }}
+      <a href="{{ $href }}"{{ if hasPrefix $href "http" }} target="_blank" rel="noopener"{{ end }}>{{ .Name }}</a>
+      {{- end }}
+    </nav>
+  </div>
+
+  {{- if eq .Kind "404" }}
+  <div class="summit">
+    {{ partial "camp-icon.html" . }}
+    <span>Off route</span>
+  </div>
+  <h1>This page is not on the mountain.</h1>
+
+  {{- else if .IsHome }}
+  <div class="summit">
+    {{ partial "camp-icon.html" . }}
+    <span>Summit</span>
+  </div>
+  <h1>{{ site.Params.tagline | default site.Title }}</h1>
+
+  {{- else if .IsPage }}
+  {{- $kind := partial "kind.html" . }}
+  <div class="summit">
+    <span>{{ $kind }}</span>
+    <span class="summit-sep">/</span>
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02 Jan 2006" }}</time>
+  </div>
+  <h1>{{ .Title }}</h1>
+
+  {{- else }}
+  {{- $count := len .Pages }}
+  {{- if eq .Section "books" }}{{ $count = len hugo.Data.books }}{{ end }}
+  {{- $unit := cond (eq $count 1) "entry" "entries" }}
+  {{- if eq .Kind "taxonomy" }}{{ $unit = .Title | lower }}{{ end }}
+  <div class="summit">
+    {{ partial "camp-icon.html" . }}
+    <span>{{ $count }} {{ $unit }}</span>
+  </div>
+  <h1>{{ .Title }}</h1>
+  {{- end }}
+</header>

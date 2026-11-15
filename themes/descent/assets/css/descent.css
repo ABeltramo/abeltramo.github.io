@@ -1,0 +1,1018 @@
+/* ============================================================
+   The descent
+   Night sky at the summit, a steel cable down the rock face.
+   ============================================================ */
+
+:root {
+  --ink: #ebe8e2;
+  --ink-dim: #aaa7a1;
+  --ink-faint: #7e8185;
+
+  --line: rgba(255, 255, 255, 0.09);
+  --card: rgba(255, 255, 255, 0.035);
+
+  --cable: #5c666f;
+  --cable-hi: #c6d0d8;
+  --cable-lo: #2f363d;
+  --cable-dark: #04060a;
+
+  --metal-1: #eef2f5;
+  --metal-2: #99a1a9;
+  --metal-3: #ccd2d8;
+  --metal-4: #6f777f;
+  --sleeve-1: #d8b179;
+  --sleeve-2: #f0d4a4;
+  --sleeve-3: #ae8854;
+
+  --kind-post: #e3b47c;
+  --kind-note: #8fbfa9;
+  --kind-slides: #9aacdf;
+  --kind-book: #cf9b82;
+
+  --sans: ui-sans-serif, -apple-system, "Inter", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  --left-w: 186px;
+  --cable-gap: 84px;
+  --axis-w: 56px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  /* matches the bottom of the rock face, so a short page has no seam */
+  background-color: #080a0e;
+  background-image:
+    radial-gradient(ellipse 700px 340px at 74% 8%, rgba(158, 186, 232, 0.16), transparent 70%),
+    linear-gradient(180deg, #060b17 0%, #0a1120 34%, #0c1220 62%, #0c1220 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 660px, 100% 660px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---------- summit ---------- */
+
+.hero {
+  position: relative;
+  z-index: 2;
+  max-width: 956px;
+  margin: 0 auto;
+  padding: 40px 28px 132px;
+  color: var(--ink);
+}
+
+.hero-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.brand .dot {
+  color: #e0a878;
+}
+
+.site-nav {
+  display: flex;
+  gap: 20px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.site-nav a:hover {
+  color: var(--ink);
+}
+
+.summit {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 46px 0 18px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.summit svg {
+  width: 22px;
+  height: 13px;
+  overflow: visible;
+}
+
+.summit-sep {
+  color: #4a545e;
+}
+
+.hero h1 {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--serif);
+  font-size: 2.1rem;
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+/* night sky */
+.starfield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 470px;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+}
+
+/* ---------- the rock face ---------- */
+
+.rock-face {
+  position: relative;
+  /* the last stop is transparent, so a short page fades into the base
+     colour instead of ending on a hard edge */
+  background-color: #080a0e;
+  background-image: linear-gradient(
+    180deg,
+    #0c1220 0px,
+    #0d1322 300px,
+    #151c2a 520px,
+    #171e29 700px,
+    #131922 900px,
+    #0f141b 1200px,
+    #0b0e13 1650px,
+    rgba(9, 11, 16, 0.6) 1950px,
+    rgba(8, 10, 14, 0) 2250px
+  );
+  background-repeat: no-repeat;
+}
+
+/* rock detail: sparse strata near the summit, denser rock lower down.
+   The horizontal mask clears the reading column. */
+.rock-face::before,
+.rock-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  background-position: center top;
+}
+
+.rock-face::before {
+  background-image: url("{{ .rockA }}");
+  background-size: 900px 960px;
+  opacity: 0.9;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0px, #000 520px, #000 100%),
+    linear-gradient(to right, #000 0%, #000 16%, transparent 40%, transparent 60%, #000 84%, #000 100%);
+  mask-image:
+    linear-gradient(to bottom, transparent 0px, #000 520px, #000 100%),
+    linear-gradient(to right, #000 0%, #000 16%, transparent 40%, transparent 60%, #000 84%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.rock-face::after {
+  background-image: url("{{ .rockB }}");
+  background-size: 700px 760px;
+  opacity: 0.8;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 700px, #000 1700px, #000 100%),
+    linear-gradient(to right, #000 0%, #000 15%, transparent 38%, transparent 62%, #000 85%, #000 100%);
+  mask-image:
+    linear-gradient(to bottom, transparent 700px, #000 1700px, #000 100%),
+    linear-gradient(to right, #000 0%, #000 15%, transparent 38%, transparent 62%, #000 85%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* fades the last of the rock into the base colour, so a short page
+   ends on the same tone as the canvas around it */
+.valley {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: min(200px, 45%);
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(8, 10, 14, 0), #080a0e 75%);
+}
+
+/* ridgelines where the mountain meets the sky */
+.skyline {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  width: 100vw;
+  height: 400px;
+  translate: -50% 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ridge--back {
+  fill: #17203a;
+}
+
+.ridge--mid {
+  fill: #121a2a;
+}
+
+.ridge--front {
+  fill: #0c1220;
+}
+
+.crest {
+  fill: none;
+  stroke: #cfdcf0;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.crest--back {
+  stroke-opacity: 0.55;
+}
+
+.crest--mid {
+  stroke-opacity: 0.22;
+}
+
+/* ---------- timeline frame ---------- */
+
+/* a single page lines its text up with the title above it */
+body.kind-page .page {
+  max-width: 956px;
+}
+
+.tl,
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 250px 28px 90px;
+  color: var(--ink);
+}
+
+.tl-host {
+  position: relative;
+}
+
+.tl-host[data-timeline] {
+  min-height: 40px;
+}
+
+.tl-rope-slot {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 40px, #000 calc(100% - 90px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 40px, #000 calc(100% - 90px), transparent 100%);
+}
+
+.tl-rope {
+  display: block;
+  overflow: visible;
+}
+
+/* steel cable: thin, tight strands, cool highlights */
+.rope-shadow {
+  fill: none;
+  stroke: var(--cable-dark);
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.rope-line {
+  fill: none;
+  stroke: var(--cable);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.rope-strand {
+  fill: none;
+  stroke: var(--cable-hi);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+
+.rope-strand--alt {
+  stroke: var(--cable-lo);
+  opacity: 0.9;
+}
+
+.tl-flow {
+  position: relative;
+  z-index: 1;
+}
+
+.tl-empty {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+/* the note at the valley floor */
+.about {
+  max-width: 58ch;
+  margin: 90px auto 0;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  line-height: 1.62;
+  color: var(--ink-dim);
+}
+
+.about p {
+  margin: 0 0 0.85em;
+}
+
+.about a {
+  color: var(--ink-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.about a:hover {
+  color: var(--ink);
+}
+
+/* camps */
+.tl-year {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: var(--left-w) auto 1fr;
+  align-items: center;
+  gap: 0;
+  margin: 64px 0 10px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.tl-year::before {
+  content: "";
+  height: 1px;
+  background: var(--line);
+  margin-right: 18px;
+}
+
+.tl-year::after {
+  content: "";
+  height: 1px;
+  background: var(--line);
+  margin-left: 18px;
+}
+
+.tl-year span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.tl-year .camp-icon {
+  width: 20px;
+  height: 12px;
+  align-self: center;
+  overflow: visible;
+  color: var(--ink-dim);
+}
+
+/* rows */
+.tl-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--left-w) minmax(0, 1fr);
+  column-gap: var(--cable-gap);
+  align-items: center;
+  padding: 16px 0;
+}
+
+.tl-cell {
+  position: relative;
+  min-width: 0;
+}
+
+.tl-cell--left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.tl-cell--right {
+  display: block;
+}
+
+.tl-cell--date {
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.tl-row:nth-child(5n + 1) .tl-node {
+  margin-left: -5px;
+}
+
+.tl-row:nth-child(5n + 3) .tl-node {
+  margin-left: 4px;
+}
+
+.tl-row:nth-child(5n + 4) .tl-node {
+  margin-left: -2px;
+}
+
+.tl-node {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 62px;
+  top: 50%;
+  left: calc(var(--left-w) + (var(--cable-gap) - 40px) / 2);
+  translate: 0 -50%;
+  z-index: 3;
+}
+
+/* ---------- anchor ---------- */
+
+.anchor {
+  display: block;
+  overflow: visible;
+  translate: 5px 0;
+  rotate: -4deg;
+  transition: rotate 0.3s ease, filter 0.3s ease;
+}
+
+.bolt-plate {
+  fill: #232b32;
+  stroke: #3f4952;
+  stroke-width: 0.8;
+}
+
+.bolt-edge {
+  stroke: #5a656e;
+  stroke-width: 0.8;
+  fill: none;
+}
+
+.bolt-head {
+  fill: url(#cbMetal);
+}
+
+.bolt-socket {
+  fill: #2a3238;
+}
+
+.cb-shadow {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 5.6;
+  stroke-linecap: round;
+}
+
+.cb-frame {
+  fill: none;
+  stroke: url(#cbMetal);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.cb-gate {
+  fill: none;
+  stroke: url(#cbMetal);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.cb-sleeve {
+  fill: url(#cbSleeve);
+}
+
+.cb-knurl {
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 0.7;
+  fill: none;
+}
+
+.cb-hinge {
+  fill: var(--metal-3);
+}
+
+.tl-row:hover .anchor {
+  filter: brightness(1.15) drop-shadow(0 0 7px rgba(190, 214, 238, 0.3));
+  rotate: 0deg;
+}
+
+/* ---------- cards ---------- */
+
+.card {
+  display: block;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  margin: -12px -16px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  background: var(--card);
+  border-color: var(--line);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.card-meta time {
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.kind {
+  position: relative;
+  padding-left: 11px;
+}
+
+.kind::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: currentColor;
+}
+
+.kind--post {
+  color: var(--kind-post);
+}
+
+.kind--note {
+  color: var(--kind-note);
+}
+
+.kind--slides {
+  color: var(--kind-slides);
+}
+
+.kind--book {
+  color: var(--kind-book);
+}
+
+.card-title {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  line-height: 1.3;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.card:hover .card-title {
+  color: var(--kind-post);
+}
+
+.card-desc {
+  display: block;
+  margin-top: 4px;
+  max-width: 46ch;
+  font-size: 0.845rem;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
+/* ---------- books ---------- */
+
+.book {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.book-cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  width: 96px;
+  height: 142px;
+  padding: 10px 9px 11px 13px;
+  overflow: hidden;
+  border-radius: 1px 3px 3px 1px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0.25)),
+    linear-gradient(165deg, var(--c1), var(--c2));
+  box-shadow:
+    inset 3px 0 0 rgba(0, 0, 0, 0.32),
+    inset 4px 0 0 rgba(255, 255, 255, 0.05),
+    0 6px 18px rgba(0, 0, 0, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.book-img {
+  display: block;
+  width: calc(100% + 22px);
+  height: calc(100% + 21px);
+  margin: -10px -9px -11px -13px;
+  object-fit: cover;
+}
+
+.book:hover .book-cover {
+  transform: translateY(-2px) rotate(-0.6deg);
+  box-shadow:
+    inset 3px 0 0 rgba(0, 0, 0, 0.32),
+    inset 4px 0 0 rgba(255, 255, 255, 0.05),
+    0 12px 26px rgba(0, 0, 0, 0.55);
+}
+
+.book-title {
+  font-family: var(--serif);
+  font-size: 0.66rem;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.88);
+  text-wrap: balance;
+}
+
+.book-author {
+  font-family: var(--mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.book-date {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  text-align: right;
+}
+
+/* reading list page */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 34px 26px;
+}
+
+.book--large {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.book--large .book-cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  padding: 14px 12px 16px 16px;
+}
+
+.book--large .book-img {
+  width: calc(100% + 28px);
+  height: calc(100% + 30px);
+  margin: -14px -12px -16px -16px;
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.book-name {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.book-by {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+
+.book--large .book-date {
+  text-align: left;
+}
+
+/* ---------- terms ---------- */
+
+.term-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.term {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.term:hover {
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--card);
+}
+
+.term-count {
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- single post ---------- */
+
+.post {
+  max-width: 720px;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 34px 0 0;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+.tag:hover {
+  color: var(--ink);
+}
+
+.post-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 46px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+.post-foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  max-width: 60%;
+}
+
+.post-foot-links a {
+  color: var(--ink-dim);
+}
+
+.post-foot-links a:hover {
+  color: var(--ink);
+}
+
+/* ---------- 404 ---------- */
+
+.lost {
+  max-width: 560px;
+}
+
+.lost-link {
+  display: inline-block;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.lost-link:hover {
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ---------- footer ---------- */
+
+.site-foot {
+  position: relative;
+  z-index: 1;
+  max-width: 956px;
+  margin: 0 auto;
+  padding: 26px 28px 80px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  color: #5f6469;
+  border-top: 1px solid var(--line);
+}
+
+.site-foot-links {
+  display: flex;
+  gap: 16px;
+}
+
+.site-foot-links a:hover {
+  color: var(--ink-dim);
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 760px) {
+  .hero {
+    padding: 26px 18px 140px;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .site-nav {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+  }
+
+  .summit {
+    margin-top: 30px;
+  }
+
+  .skyline {
+    top: -110px;
+    height: 340px;
+  }
+
+  .tl,
+  .page {
+    padding: 190px 18px 60px;
+  }
+
+  .tl-year {
+    grid-template-columns: auto 1fr;
+    margin-top: 46px;
+  }
+
+  .tl-year::before {
+    display: none;
+  }
+
+  /* one column: the cable on the left, the entry beside it */
+  .tl-row {
+    grid-template-columns: var(--axis-w) minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: start;
+    padding: 12px 0;
+  }
+
+  .tl-row:nth-child(n) .tl-node {
+    margin-left: 0;
+  }
+
+  .tl-node {
+    position: static;
+    grid-column: 1;
+    justify-self: center;
+    translate: none;
+    margin: 0;
+  }
+
+  .anchor {
+    translate: 0 0;
+  }
+
+  .tl-cell--date {
+    display: none;
+  }
+
+  .tl-cell--left {
+    grid-column: 2;
+    align-items: flex-start;
+  }
+
+  .tl-cell--left.is-empty {
+    display: none;
+  }
+
+  .tl-cell--right {
+    grid-column: 2;
+  }
+
+  .book {
+    align-items: flex-start;
+  }
+
+  .book-date {
+    text-align: left;
+  }
+
+  .card {
+    margin: 0;
+    padding: 8px 0;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 26px 18px;
+  }
+
+  .post-foot-links {
+    max-width: 100%;
+  }
+
+  .site-foot {
+    flex-direction: column;
+    gap: 8px;
+    padding: 22px 18px 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
