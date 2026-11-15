@@ -17,7 +17,27 @@
   author: Andy Weir
   isbn: "9781529157468"
 
-- date: "2026-05"
+- date: "2025-05"
   title: Upgrade
   author: Blake Crouch
   isbn: "9781529045376"
+
+- date: "2024-11"
+  title: The Drift
+  author: C. J. Tudor
+  isbn: "9780593356562"
+
+- date: "2024-09"
+  title: Dark Matter
+  author: Blake Crouch
+  isbn: "9781410491459"
+
+- date: "2020-01"
+  title: The Chain
+  author: Adrian McKinty
+  isbn: "9780316531269"
+
+- date: "2019-10"
+  title: The Institute
+  author: Stephen King
+  isbn: "9781982110567"
