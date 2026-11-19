@@ -38,8 +38,18 @@ function walk(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) return walk(full);
-    return entry.name === "slides.md" ? [full] : [];
+    return entry.name === "slides.md" || entry.name === "index.html" ? [full] : [];
   });
+}
+
+// Standalone HTML decks carry their metadata in tags instead of front matter.
+function htmlMeta(text) {
+  const out = {};
+  const title = /<title>([^<]*)<\/title>/.exec(text);
+  if (title) out.title = title[1].trim();
+  const date = /<meta\s+name=["']date["']\s+content=["']([^"']+)["']/.exec(text);
+  if (date) out.date = date[1].trim();
+  return out;
 }
 
 function frontMatter(text) {
@@ -90,18 +100,22 @@ function previousDescriptions() {
 }
 
 const known = previousDescriptions();
-const decks = walk(SRC).map((file) => {
+const decks = [];
+for (const file of walk(SRC)) {
+  // A folder with slides.md wins; skip its index.html twin
+  if (file.endsWith("index.html") && existsSync(join(dirname(file), "slides.md"))) continue;
   const text = readFileSync(file, "utf8");
-  const meta = frontMatter(text);
+  const meta = file.endsWith("slides.md") ? frontMatter(text) : htmlMeta(text);
   const rel = relative(SRC, dirname(file)).split(/[\\/]/).join("/");
   const folder = rel.split("/").pop();
 
   const date = dateFromFolder(folder) || meta.date || dateFromGit(file) || dateFromMtime(file);
-  const url = `/presentations/${rel}/slides.html`;
+  const page = file.endsWith("slides.md") ? "slides.html" : "index.html";
+  const url = `/presentations/${rel}/${page}`;
   const description = meta.description || known.get(url) || "";
 
-  return { date, title: meta.title || folder, description, url };
-});
+  decks.push({ date, title: meta.title || folder, description, url });
+}
 
 decks.sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 

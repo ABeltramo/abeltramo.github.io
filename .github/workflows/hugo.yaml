@@ -7,6 +7,10 @@ on:
     branches:
       - master
 
+  # Rebuilds when the presentations repo notifies us (push to its main)
+  repository_dispatch:
+    types: [presentations-updated]
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -42,6 +46,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # The Marp decks. Public repo, so the default token can read it.
+      # Full history: sync-presentations.mjs dates decks by last commit.
+      - name: Checkout presentations
+        uses: actions/checkout@v4
+        with:
+          repository: ABeltramo/presentations
+          path: presentations
+          fetch-depth: 0
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
@@ -65,6 +78,9 @@ jobs:
       - name: Fetch book covers
         run: node scripts/fetch-covers.mjs
 
+      - name: Sync presentations data
+        run: node scripts/sync-presentations.mjs --repo presentations
+
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -74,6 +90,64 @@ jobs:
           hugo \
             --gc \
             --minify
+
+      # --- Slides: build with Marp and mount under /presentations/ ---
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: presentations/package-lock.json
+
+      - name: Build slides
+        working-directory: presentations
+        run: |
+          npm ci
+          npm run build
+
+      - name: Mount slides into the site
+        run: |
+          # Copy non-Markdown assets (images, fonts) next to the built decks
+          find presentations/src -type f ! -name "*.md" | while read f; do
+            dest="presentations/dist/${f#presentations/src/}"
+            mkdir -p "$(dirname "$dest")"
+            cp "$f" "$dest"
+          done
+          # The Hugo section serves /presentations/; drop the Marp index
+          rm -f presentations/dist/index.html
+          mkdir -p public/presentations
+          cp -R presentations/dist/. public/presentations/
+
+      - name: Create legacy URL redirects
+        run: |
+          python3 - <<'EOF'
+          from pathlib import Path
+
+          redirects = {
+              "rh/asago/tech-meeting-07-10/slides.html": "../tech-meeting-26-10-07/slides.html",
+              "rh/asago/tech-meeting-21-10/slides.html": "../tech-meeting-26-10-21/slides.html",
+              "rh/asago/tech-meeting-04-11/slides.html": "../tech-meeting-26-11-04/slides.html",
+          }
+
+          for old_path, target in redirects.items():
+              page = Path("public/presentations") / old_path
+              page.parent.mkdir(parents=True, exist_ok=True)
+              page.write_text("\n".join([
+                  "<!doctype html>",
+                  '<html lang="en">',
+                  "<head>",
+                  '  <meta charset="utf-8">',
+                  f'  <meta http-equiv="refresh" content="0; url={target}">',
+                  f'  <link rel="canonical" href="{target}">',
+                  "<title>Presentation moved</title>",
+                  "</head>",
+                  "<body>",
+                  f'  <p>This presentation moved. <a href="{target}">Open the updated presentation</a>.</p>',
+                  "</body>",
+                  "</html>",
+              ]) + "\n")
+              print(f"Redirect created: {old_path} -> {target}")
+          EOF
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

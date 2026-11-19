@@ -1,0 +1,12 @@
+{{ define "main" }}
+  {{- $items := partial "timeline/items.html" (dict "pages" slice "books" false "presentations" true) -}}
+
+  {{- if $items }}
+  <div class="tl-host" data-timeline>
+    {{ partial "timeline/rope-slot.html" . }}
+    {{ partial "timeline/list.html" (dict "items" $items "camp" true) }}
+  </div>
+  {{- else }}
+  <p class="tl-empty">Nothing here yet.</p>
+  {{- end }}
+{{ end }}

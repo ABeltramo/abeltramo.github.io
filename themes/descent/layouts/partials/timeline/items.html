@@ -49,7 +49,7 @@
       "title" .title
       "desc" (.description | default "")
       "url" .url
-      "external" true
+      "external" (hasPrefix .url "http")
     ) -}}
   {{- end }}
 {{- end -}}
